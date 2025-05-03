@@ -1,0 +1,217 @@
+{
+	"compiler": {
+		"version": "0.8.26+commit.8a97fa7a"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "donationID",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "charity",
+						"type": "string"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "charityAdd",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "donorAdd",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "donationAmount",
+						"type": "uint256"
+					}
+				],
+				"name": "DonationCreated",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_charity",
+						"type": "string"
+					},
+					{
+						"internalType": "address",
+						"name": "charityAdd",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "donorAdd",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_donationAmount",
+						"type": "uint256"
+					}
+				],
+				"name": "donate",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "donationCount",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "donations",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "charity",
+						"type": "string"
+					},
+					{
+						"internalType": "address",
+						"name": "charityAdd",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "donorAdd",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "donationAmount",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_charity",
+						"type": "string"
+					}
+				],
+				"name": "getDonationsByName",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "charity",
+								"type": "string"
+							},
+							{
+								"internalType": "address",
+								"name": "charityAdd",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "donorAdd",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "donationAmount",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct DonationContract.Donation[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "owner",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/donation.sol": "DonationContract"
+		},
+		"evmVersion": "cancun",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/donation.sol": {
+			"keccak256": "0x7fbf0a9243d774b5dfcb356a24d9559750320983bf628517f7123ea973e8f3a1",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://2feacb51f723730803889fbe13497ea5d1b9a0cf24696ad862346d43746dcdc4",
+				"dweb:/ipfs/QmWxDwDEKscVMFxF5oZ1kfmbw4fjsedw3qJtUXaraMiNad"
+			]
+		}
+	},
+	"version": 1
+}

@@ -1,0 +1,70 @@
+{
+	"compiler": {
+		"version": "0.8.26+commit.8a97fa7a"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"name": "verifyCharity",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/donation.sol": "ICharityVerify"
+		},
+		"evmVersion": "cancun",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/donation.sol": {
+			"keccak256": "0x7fbf0a9243d774b5dfcb356a24d9559750320983bf628517f7123ea973e8f3a1",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://2feacb51f723730803889fbe13497ea5d1b9a0cf24696ad862346d43746dcdc4",
+				"dweb:/ipfs/QmWxDwDEKscVMFxF5oZ1kfmbw4fjsedw3qJtUXaraMiNad"
+			]
+		}
+	},
+	"version": 1
+}
