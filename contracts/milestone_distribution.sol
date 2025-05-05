@@ -40,8 +40,6 @@ contract DistributionContract {
                 targetCharity.fundsLocked = false;
             }
         }
-
-        
         
     } 
 

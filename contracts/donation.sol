@@ -11,8 +11,7 @@ interface IMilestone {
 
 contract DonationContract {
 
-    // The contract owner's address
-    address public owner;
+
     address verifyContractAdd;
     address milestoneAdd;
 
@@ -33,10 +32,9 @@ contract DonationContract {
     event DonationCreated(uint256 donationID, string charity, address charityAdd, address donorAdd, uint donationAmount);
 
     // Contract constructor, set addresses of other contracts
-    constructor() {
-       
-        verifyContractAdd = address(0xcD6a42782d230D7c13A74ddec5dD140e55499Df9);
-        milestoneAdd = address(0xb5465ED8EcD4F79dD4BE10A7C8e7a50664e5eeEB);
+    constructor(address _verify, address _milestone) {
+        verifyContractAdd = address(_verify);
+        milestoneAdd = address(_milestone);
     }    
 
     function donate(string memory _charity, address charityAdd, address donorAdd, uint _donationAmount) public payable  {
@@ -76,6 +74,44 @@ contract DonationContract {
                 donationsArray[index] = donations[i];
                 index++;
             }
+        }
+
+        return donationsArray;
+    }
+
+    function getDonationsByAddress(address _charityAddress) public view returns (Donation[] memory) {
+        uint count = 0;
+
+        // Count how many donations that charity has
+        for (uint i = 1; i <= donationCount; i++) {
+            if (donations[i].charityAdd == _charityAddress) {
+                count++;
+            }
+        }
+
+        // Create array to hold just that charities donations
+        Donation[] memory donationsArray = new Donation[](count);
+        uint index = 0;
+
+        // Populate that array
+        for (uint i = 1; i <= donationCount; ++i) {
+            if (donations[i].charityAdd == _charityAddress) {
+                donationsArray[index] = donations[i];
+                index++;
+            }
+        }
+
+        return donationsArray;
+    }
+
+    function getAllDonations() public view returns (Donation[] memory) {
+        // Create array to hold donations
+        Donation[] memory donationsArray = new Donation[](donationCount);
+
+
+        // Populate that array
+        for (uint i = 1; i <= donationCount; ++i) {
+            donationsArray[(i-1)] = donations[i];
         }
 
         return donationsArray;
