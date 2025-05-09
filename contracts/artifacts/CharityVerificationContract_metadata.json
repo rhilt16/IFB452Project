@@ -1,10 +1,21 @@
 {
 	"compiler": {
-		"version": "0.8.26+commit.8a97fa7a"
+		"version": "0.8.30+commit.73712a01"
 	},
 	"language": "Solidity",
 	"output": {
 		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_roleContract",
+						"type": "address"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
 			{
 				"inputs": [
 					{
@@ -45,7 +56,7 @@
 		"compilationTarget": {
 			"contracts/charity_verification.sol": "CharityVerificationContract"
 		},
-		"evmVersion": "cancun",
+		"evmVersion": "prague",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
@@ -58,11 +69,11 @@
 	},
 	"sources": {
 		"contracts/charity_verification.sol": {
-			"keccak256": "0x83c706e637feef51143dfc64ea78c31b4f1171481fec09667ccd3189c6a9acdb",
+			"keccak256": "0xfacfc202faa2281d2ab0d742ca3f1c8e433421fef04032459e836520bf52ee89",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://d9a0c847398fedf511bb8dbc7a16568ba2cbf0bb19b6e2526690926ed1fc7fe8",
-				"dweb:/ipfs/QmVWa7q5EgRkUY3qoSuFY23hbDfTuHE6rRAy8GsiFm6mwz"
+				"bzz-raw://08b66e033efe95c0c48e8cf98f25eba2226b6c971067ca5889305bcba92f0dad",
+				"dweb:/ipfs/QmRVLQCQQWagQ6epfRSDVKHXvsZFyXBnFEPeV8dKNkWZyN"
 			]
 		}
 	},

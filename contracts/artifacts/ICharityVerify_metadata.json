@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.26+commit.8a97fa7a"
+		"version": "0.8.30+commit.73712a01"
 	},
 	"language": "Solidity",
 	"output": {
@@ -45,7 +45,7 @@
 		"compilationTarget": {
 			"contracts/donation.sol": "ICharityVerify"
 		},
-		"evmVersion": "cancun",
+		"evmVersion": "prague",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
@@ -58,11 +58,11 @@
 	},
 	"sources": {
 		"contracts/donation.sol": {
-			"keccak256": "0x1c19a27d2a7bd46fdd9ebe4d2c30fe99cba060b83fabb943409ed72bc877e515",
+			"keccak256": "0xe6f2066b7eafdf9bab7403c3b93037580494458025a1bf6693fd7c9767e2db4a",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://4f6151a781d35e2ce86a5b9b3916d44846aef65629a60fdafc9987ba0c4ef0ea",
-				"dweb:/ipfs/QmPUsEG7bUJxAUuuK6jubVmuLecE5N6NCDFLbEyiz7yUPu"
+				"bzz-raw://cf4bd53428d11523e4cf7e17b994d4ea295e05bb38566243dd38a2aed748c28c",
+				"dweb:/ipfs/QmeK2keb8t3ivfy4z8CtPTLJ3fvyGs1WiSGJgPMCL3yT6s"
 			]
 		}
 	},

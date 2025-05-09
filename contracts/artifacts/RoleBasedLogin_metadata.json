@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.26+commit.8a97fa7a"
+		"version": "0.8.30+commit.73712a01"
 	},
 	"language": "Solidity",
 	"output": {
@@ -97,35 +97,6 @@
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "",
-						"type": "address"
-					}
-				],
-				"name": "users",
-				"outputs": [
-					{
-						"internalType": "string",
-						"name": "username",
-						"type": "string"
-					},
-					{
-						"internalType": "enum RoleBasedLogin.Role",
-						"name": "role",
-						"type": "uint8"
-					},
-					{
-						"internalType": "bool",
-						"name": "isRegistered",
-						"type": "bool"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
 			}
 		],
 		"devdoc": {
@@ -153,7 +124,7 @@
 		"compilationTarget": {
 			"contracts/rolebasedlogin.sol": "RoleBasedLogin"
 		},
-		"evmVersion": "cancun",
+		"evmVersion": "prague",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
@@ -166,11 +137,11 @@
 	},
 	"sources": {
 		"contracts/rolebasedlogin.sol": {
-			"keccak256": "0xc12cfbc5b19e1fd0fdc17fb1173543348e406a27988228b9d0f23b0167419e18",
+			"keccak256": "0xe3bf2e40150a4b0fc534bd1187eef2e56356f3d4139f521b9a8a50ffbd65eedb",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://c1bd188ddf683db7b10732e35aec2ddfaf1021a8573312df95dc16ca620f5c83",
-				"dweb:/ipfs/QmdhJ1m7A6SmTsxMYNFRkfqikXMM6xGNTpvrtbZXtrbhQY"
+				"bzz-raw://39b582ac763ea17375c516792f396267aa3b34f1a1eb7841c1c93db1801e4d86",
+				"dweb:/ipfs/QmYGoKV8dQ5Kq7wgUcLNqoG8KcgqMC1vyQf41rK8YCLxfi"
 			]
 		}
 	},

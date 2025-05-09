@@ -14,7 +14,7 @@ contract RoleBasedLogin {
     }
 
     // Mapping to store users based on their wallet address
-    mapping(address => User) public users;
+    mapping(address => User) private users;
 
     // Events to log when users register or login
     event UserRegistered(address indexed user, string username, Role role);

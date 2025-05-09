@@ -9,11 +9,16 @@ interface IMilestone {
     function contributeFunds(string memory _charity, uint _amount) external;
 }
 
+interface IRoles {
+    function getMyRole() external view returns (string memory);
+
+}
 contract DonationContract {
 
 
     address verifyContractAdd;
     address milestoneAdd;
+    address roleContractAdd;
 
 
     struct Donation {
@@ -27,17 +32,31 @@ contract DonationContract {
     mapping (uint256 => Donation) public donations;
     // Counter to keep track of the total number of quality contracts
     uint256 public donationCount; 
+    string private role;
     
     // Event triggered when a new donation is completed
     event DonationCreated(uint256 donationID, string charity, address charityAdd, address donorAdd, uint donationAmount);
 
     // Contract constructor, set addresses of other contracts
-    constructor(address _verify, address _milestone) {
+    constructor(address _verify, address _milestone, address _roleContract) {
         verifyContractAdd = address(_verify);
         milestoneAdd = address(_milestone);
-    }    
+        roleContractAdd = address(_roleContract);
+        role = IRoles(roleContractAdd).getMyRole();
+    }
 
-    function donate(string memory _charity, address charityAdd, address donorAdd, uint _donationAmount) public payable  {
+    modifier isDonor() {
+        require(keccak256(abi.encodePacked(role)) == "donor", "Not a valid donor");
+        _;
+    }
+
+    modifier isCharity() {
+        require(keccak256(abi.encodePacked(role)) == "collector", "Not a valid charity");
+        _;
+    }
+
+
+    function donate(string memory _charity, address charityAdd, address donorAdd, uint _donationAmount) public payable isDonor  {
         if(!(ICharityVerify(verifyContractAdd).verifyCharity(charityAdd, _charity))){
             revert("not valid");
         }

@@ -2,7 +2,9 @@
 
 pragma solidity >=0.7.0 <0.9.0;
 
+
 contract CharityVerificationContract {
+
     
     function verifyCharity(address charityAddress, string memory name) external pure returns (bool success) {
         

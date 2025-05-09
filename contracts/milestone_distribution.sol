@@ -1,9 +1,22 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+interface IRoles {
+    function getMyRole() external view returns (string memory);
+
+}
+
 contract DistributionContract {
  
     uint256 public charityCount;
+
+    string private role;
+    address roleContractAdd;
+
+    constructor(address _roleContract) {
+        roleContractAdd = address(_roleContract);
+        role = IRoles(roleContractAdd).getMyRole();
+    }
 
     struct CharityDetails {
         string name;
@@ -11,6 +24,16 @@ contract DistributionContract {
         uint totalRaised; // Amount of money raised by the charity
         uint targetDonation;// Target amount of money to reach
         bool fundsLocked;
+    }
+
+    modifier isDonor() {
+        require(keccak256(abi.encodePacked(role)) == "donor", "Not a valid donor");
+        _;
+    }
+
+    modifier isCharity() {
+        require(keccak256(abi.encodePacked(role)) == "collector", "Not a valid charity");
+        _;
     }
   
     mapping (uint256 => CharityDetails) public charities;
@@ -26,7 +49,7 @@ contract DistributionContract {
         return -1;
     }
 
-    function contributeFunds(string memory _charity, uint _amount) external {
+    function contributeFunds(string memory _charity, uint _amount) external isDonor  {
         int _charityIndex = charityExists(_charity);
         if(_charityIndex == -1){
             
@@ -43,7 +66,7 @@ contract DistributionContract {
         
     } 
 
-    function addCharity(string memory _name, address _charityAddress) public {
+    function addCharity(string memory _name, address _charityAddress) private {
         // Increment contractCount to generate a unique contract ID
         charityCount++;
 
