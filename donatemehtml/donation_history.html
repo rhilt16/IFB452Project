@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Donation History</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      margin: 0;
+      padding: 2rem;
+    }
+    h1 {
+      color: #00ffcc;
+      text-align: center;
+    }
+    #history {
+      margin-top: 2rem;
+      background: #1c1c1e;
+      padding: 1rem;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+  .profile-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: #1c1c1e;
+    padding: 0.5rem 1rem;
+    border-radius: 30px;
+    border: 2px solid #00ffcc;
+    color: #fff;
+  }
+  .profile-badge span {
+    background-color: #00ffcc;
+    color: #000;
+    font-weight: bold;
+    font-size: 1rem;
+    padding: 0.5rem;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    text-align: center;
+  }
+  .profile-badge p {
+    margin: 0;
+    font-size: 0.9rem;
+  }
+
+  </style>
+</head>
+<body>
+  <div class="profile-badge" id="profileBadge">
+    <span id="profileInitials">--</span>
+    <div>
+      <p id="profileName">Loading...</p>
+      <p id="profileRole">Checking role...</p>
+    </div>
+  </div>
+  
+
+  <h1>My Donation History</h1>
+
+  <div id="history">Connecting to wallet...</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.3.6/dist/web3.min.js"></script>
+  <script>
+    const donationContractAddress = "0xYourDonationContractAddress"; // Replace this
+    const donationContractABI = [
+      {
+        "inputs": [{ "internalType": "address", "name": "_address", "type": "address" }],
+        "name": "getDonationsByAddress",
+        "outputs": [{
+          "components": [
+            { "internalType": "string", "name": "charity", "type": "string" },
+            { "internalType": "address", "name": "charityAdd", "type": "address" },
+            { "internalType": "address", "name": "donorAdd", "type": "address" },
+            { "internalType": "uint256", "name": "donationAmount", "type": "uint256" }
+          ],
+          "internalType": "struct DonationContract.Donation[]",
+          "name": "",
+          "type": "tuple[]"
+        }],
+        "stateMutability": "view",
+        "type": "function"
+      }
+    ];
+
+    let web3;
+    let contract;
+
+    window.addEventListener('load', async () => {
+      const historyDiv = document.getElementById('history');
+
+      if (window.ethereum) {
+        web3 = new Web3(window.ethereum);
+        await window.ethereum.enable();
+        const accounts = await web3.eth.getAccounts();
+        const userAddress = accounts[0];
+
+        contract = new web3.eth.Contract(donationContractABI, donationContractAddress);
+
+        try {
+          const donations = await contract.methods.getDonationsByAddress(userAddress).call();
+
+          if (donations.length === 0) {
+            historyDiv.innerHTML = "You haven't made any donations yet.";
+            return;
+          }
+
+          let output = `<h3>Donations Made by ${userAddress}</h3>`;
+          donations.forEach((donation, index) => {
+            output += `
+              <p><strong>#${index + 1}</strong></p>
+              <p><strong>Charity:</strong> ${donation.charity}</p>
+              <p><strong>Charity Wallet:</strong> ${donation.charityAdd}</p>
+              <p><strong>Amount:</strong> ${web3.utils.fromWei(donation.donationAmount)} ETH</p>
+              <hr>
+            `;
+          });
+
+          historyDiv.innerHTML = output;
+
+        } catch (error) {
+          console.error(error);
+          historyDiv.innerHTML = "Error loading donation history.";
+        }
+
+      } else {
+        historyDiv.innerHTML = "Please install MetaMask to view your donation history.";
+      }
+    });
+    async function loadUserProfile() {
+    const roleMap = { 0: "Unregistered", 1: "Donor", 2: "Charity Collector" };
+
+    const accounts = await web3.eth.getAccounts();
+    const user = accounts[0];
+
+    const roleContract = new web3.eth.Contract(roleContractABI, roleContractAddress);
+    const userInfo = await roleContract.methods.users(user).call();
+
+    document.getElementById("walletAddress").innerText = user;
+    document.getElementById("profileName").innerText = userInfo.username || "Unknown User";
+    document.getElementById("profileRole").innerText = roleMap[userInfo.role] || "Unknown Role";
+    document.getElementById("profileInitials").innerText = userInfo.username
+    ? userInfo.username[0].toUpperCase()
+    : "?";
+    }
+
+  </script>
+
+</body>
+</html>
+
