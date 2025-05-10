@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Create a Donation Campaign</title>
+  <style>
+    
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      margin: 0;
+      padding: 2rem;
+    }
+    h1 {
+      color: #00ffcc;
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-top: 1.5rem;
+      font-weight: bold;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 0.75rem;
+      margin-top: 0.5rem;
+      border: none;
+      border-radius: 6px;
+      background-color: #2a2a2e;
+      color: #fff;
+      font-size: 1rem;
+    }
+    .checkbox {
+      display: flex;
+      align-items: center;
+      margin-top: 1.2rem;
+    }
+    .checkbox input {
+      width: auto;
+      margin-right: 0.6rem;
+    }
+    button {
+      margin-top: 2rem;
+      width: 100%;
+      padding: 1rem;
+      background-color: #00ffcc;
+      color: #000;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #00e6b8;
+    }
+    #status {
+      margin-top: 2rem;
+      text-align: center;
+      font-weight: bold;
+      color: #00ffcc;
+    }
+    .profile-badge {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #1c1c1e;
+  padding: 0.5rem 1rem;
+  border-radius: 30px;
+  border: 2px solid #00ffcc;
+  color: #fff;
+}
+.profile-badge span {
+  background-color: #00ffcc;
+  color: #000;
+  font-weight: bold;
+  font-size: 1rem;
+  padding: 0.5rem;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  text-align: center;
+}
+.profile-badge p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+  </style>
+</head>
+<body>
+  <div class="profile-badge" id="profileBadge">
+    <span id="profileInitials">--</span>
+    <div>
+      <p id="profileName">Loading...</p>
+      <p id="profileRole">Checking role...</p>
+    </div>
+  </div>
+  
+
+  <h1>Create a Donation Campaign</h1>
+
+  <label for="campaignTitle">Campaign Title:</label>
+  <input type="text" id="campaignTitle" placeholder="e.g. Clean Water for Village X">
+
+  <label for="description">Purpose / Description:</label>
+  <textarea id="description" rows="4" placeholder="Describe what this campaign aims to achieve..."></textarea>
+
+  <label for="goalAmount">Goal Amount (in USDT):</label>
+  <input type="number" id="goalAmount" placeholder="e.g. 1000">
+
+  <label for="receiverWallet">Receiving Wallet Address:</label>
+  <input type="text" id="receiverWallet" placeholder="e.g. 0xYourCharityWallet...">
+
+  <label for="milestone">Milestone Description:</label>
+  <input type="text" id="milestone" placeholder="e.g. Purchase and distribute 100 water filters">
+
+  <div class="checkbox">
+    <input type="checkbox" id="verificationCheck">
+    <label for="verificationCheck" style="margin: 0;">I confirm this wallet belongs to a verified charity</label>
+  </div>
+
+  <button onclick="createCampaign()">Create Campaign</button>
+
+  <div id="status"></div>
+
+  <script>
+    async function createCampaign() {
+      const title = document.getElementById('campaignTitle').value;
+      const desc = document.getElementById('description').value;
+      const goal = document.getElementById('goalAmount').value;
+      const wallet = document.getElementById('receiverWallet').value;
+      const milestone = document.getElementById('milestone').value;
+      const isVerified = document.getElementById('verificationCheck').checked;
+
+      if (!title || !desc || !goal || !wallet || !milestone) {
+        document.getElementById('status').innerText = "Please fill in all fields.";
+        return;
+      }
+
+      if (!isVerified) {
+        document.getElementById('status').innerText = "Please confirm charity wallet verification.";
+        return;
+      }
+
+      // Placeholder logic — in real app, send to smart contract
+      console.log("Campaign Data:", { title, desc, goal, wallet, milestone, isVerified });
+
+      document.getElementById('status').innerText = "Campaign created (mock). Ready for contract integration.";
+    }
+    async function loadUserProfile() {
+    const roleMap = { 0: "Unregistered", 1: "Donor", 2: "Charity Collector" };
+
+    const accounts = await web3.eth.getAccounts();
+    const user = accounts[0];
+
+    const roleContract = new web3.eth.Contract(roleContractABI, roleContractAddress);
+    const userInfo = await roleContract.methods.users(user).call();
+
+    document.getElementById("walletAddress").innerText = user;
+    document.getElementById("profileName").innerText = userInfo.username || "Unknown User";
+    document.getElementById("profileRole").innerText = roleMap[userInfo.role] || "Unknown Role";
+    document.getElementById("profileInitials").innerText = userInfo.username
+    ? userInfo.username[0].toUpperCase()
+    : "?";
+    }
+
+  </script>
+
+</body>
+</html>
+
