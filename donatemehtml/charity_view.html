@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Milestone Progress - DonateMe</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      margin: 0;
+      padding: 2rem;
+    }
+    h1 {
+      color: #00ffcc;
+      text-align: center;
+    }
+    .milestone-box {
+      background: #1c1c1e;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 1.5rem;
+    }
+    .milestone-box p {
+      margin: 0.5rem 0;
+    }
+    button {
+      margin-top: 1rem;
+      padding: 0.75rem 1rem;
+      background-color: #00ffcc;
+      color: #000;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #00e6b8;
+    }
+    .profile-badge {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #1c1c1e;
+  padding: 0.5rem 1rem;
+  border-radius: 30px;
+  border: 2px solid #00ffcc;
+  color: #fff;
+}
+.profile-badge span {
+  background-color: #00ffcc;
+  color: #000;
+  font-weight: bold;
+  font-size: 1rem;
+  padding: 0.5rem;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  text-align: center;
+}
+.profile-badge p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+  </style>
+</head>
+<body>
+  <div class="profile-badge" id="profileBadge">
+    <span id="profileInitials">--</span>
+    <div>
+      <p id="profileName">Loading...</p>
+      <p id="profileRole">Checking role...</p>
+    </div>
+  </div>
+  
+  <h1>Milestone Progress & Fund Access</h1>
+  <div id="milestoneList">Loading milestones...</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.3.6/dist/web3.min.js"></script>
+  <script>
+    const distributionContractAddress = "0xYourDistributionContractAddress"; // Replace with your actual address
+
+    const distributionABI = [
+      {
+        "inputs": [{ "internalType": "address", "name": "_charity", "type": "address" }],
+        "name": "getMilestonesByCharity",
+        "outputs": [{
+          "components": [
+            { "internalType": "string", "name": "milestoneName", "type": "string" },
+            { "internalType": "uint256", "name": "amount", "type": "uint256" },
+            { "internalType": "bool", "name": "isComplete", "type": "bool" },
+            { "internalType": "bool", "name": "isWithdrawn", "type": "bool" }
+          ],
+          "internalType": "struct DistributionContract.Milestone[]",
+          "name": "",
+          "type": "tuple[]"
+        }],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [{ "internalType": "uint256", "name": "_index", "type": "uint256" }],
+        "name": "withdrawMilestoneFunds",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    ];
+
+    let web3;
+    let contract;
+    let currentAccount;
+
+    window.addEventListener('load', async () => {
+      const listDiv = document.getElementById('milestoneList');
+
+      if (window.ethereum) {
+        web3 = new Web3(window.ethereum);
+        await window.ethereum.enable();
+        const accounts = await web3.eth.getAccounts();
+        currentAccount = accounts[0];
+
+        contract = new web3.eth.Contract(distributionABI, distributionContractAddress);
+
+        try {
+          const milestones = await contract.methods.getMilestonesByCharity(currentAccount).call();
+
+          if (milestones.length === 0) {
+            listDiv.innerHTML = "No milestones found for your account.";
+            return;
+          }
+
+          let html = '';
+          milestones.forEach((m, i) => {
+            html += `
+              <div class="milestone-box">
+                <p><strong>Milestone:</strong> ${m.milestoneName}</p>
+                <p><strong>Amount:</strong> ${web3.utils.fromWei(m.amount)} ETH</p>
+                <p><strong>Status:</strong> ${m.isComplete ? "✅ Complete" : "⏳ Pending"}</p>
+                <p><strong>Withdrawn:</strong> ${m.isWithdrawn ? "✅ Yes" : "❌ No"}</p>
+                ${m.isComplete && !m.isWithdrawn ? `<button onclick="withdraw(${i})">Withdraw Funds</button>` : ""}
+              </div>`;
+          });
+
+          listDiv.innerHTML = html;
+
+        } catch (err) {
+          console.error(err);
+          listDiv.innerHTML = "Error loading milestones.";
+        }
+
+      } else {
+        listDiv.innerHTML = "Please install MetaMask to continue.";
+      }
+    });
+    async function loadUserProfile() {
+    const roleMap = { 0: "Unregistered", 1: "Donor", 2: "Charity Collector" };
+
+    const accounts = await web3.eth.getAccounts();
+    const user = accounts[0];
+
+    const roleContract = new web3.eth.Contract(roleContractABI, roleContractAddress);
+    const userInfo = await roleContract.methods.users(user).call();
+
+    document.getElementById("walletAddress").innerText = user;
+    document.getElementById("profileName").innerText = userInfo.username || "Unknown User";
+    document.getElementById("profileRole").innerText = roleMap[userInfo.role] || "Unknown Role";
+    document.getElementById("profileInitials").innerText = userInfo.username
+    ? userInfo.username[0].toUpperCase()
+    : "?";
+   }
+
+
+    async function withdraw(index) {
+      try {
+        await contract.methods.withdrawMilestoneFunds(index).send({ from: currentAccount });
+        alert("Withdrawal successful!");
+        location.reload(); // Refresh to reflect updated status
+      } catch (error) {
+        console.error(error);
+        alert("Withdrawal failed. Make sure the milestone is complete and not already withdrawn.");
+      }
+    }
+  
+  </script>
+
+</body>
+</html>
