@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Search Charity - DonateMe</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      margin: 0;
+      padding: 2rem;
+    }
+    h1 {
+      color: #00ffcc;
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-top: 1.5rem;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 0.75rem;
+      margin-top: 0.5rem;
+      border: none;
+      border-radius: 6px;
+      background-color: #2a2a2e;
+      color: #fff;
+      font-size: 1rem;
+    }
+    button {
+      margin-top: 2rem;
+      width: 100%;
+      padding: 1rem;
+      background-color: #00ffcc;
+      color: #000;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #00e6b8;
+    }
+    #result {
+      margin-top: 2rem;
+      background: #1c1c1e;
+      padding: 1rem;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+  .profile-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: #1c1c1e;
+    padding: 0.5rem 1rem;
+    border-radius: 30px;
+    border: 2px solid #00ffcc;
+    color: #fff;
+  }
+  .profile-badge span {
+    background-color: #00ffcc;
+    color: #000;
+    font-weight: bold;
+    font-size: 1rem;
+    padding: 0.5rem;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    text-align: center;
+  }
+  .profile-badge p {
+    margin: 0;
+    font-size: 0.9rem;
+  }
+  </style>
+</head>
+<body>
+  <div class="profile-badge" id="profileBadge">
+    <span id="profileInitials">--</span>
+    <div>
+      <p id="profileName">Loading...</p>
+      <p id="profileRole">Checking role...</p>
+    </div>
+  </div>
+  
+  <h1>Search for a Charity</h1>
+
+  <label for="searchCharityName">Charity Name:</label>
+  <input type="text" id="searchCharityName" placeholder="e.g. Health Aid Trust" />
+
+  <label for="searchCharityAddress">Charity Wallet Address:</label>
+  <input type="text" id="searchCharityAddress" placeholder="e.g. 0x123..." />
+
+  <button onclick="verifyCharityStatus()">Check Verification</button>
+
+  <div id="result"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.3.6/dist/web3.min.js"></script>
+  <script>
+    // Replace with your deployed contract address
+    const charityVerifyAddress = "0xYourCharityVerificationContractAddress";
+
+    // Simplified ABI with only verifyCharity() function
+    const charityVerifyABI = [
+      {
+        "inputs": [
+          { "internalType": "address", "name": "", "type": "address" },
+          { "internalType": "string", "name": "", "type": "string" }
+        ],
+        "name": "verifyCharity",
+        "outputs": [
+          { "internalType": "bool", "name": "", "type": "bool" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      }
+    ];
+
+    let web3;
+    let verifyContract;
+
+    window.addEventListener('load', async () => {
+      if (window.ethereum) {
+        web3 = new Web3(window.ethereum);
+        await window.ethereum.enable();
+        verifyContract = new web3.eth.Contract(charityVerifyABI, charityVerifyAddress);
+      } else {
+        alert("Please install MetaMask to use this feature.");
+      }
+    });
+
+    async function verifyCharityStatus() {
+      const name = document.getElementById('searchCharityName').value.trim();
+      const addr = document.getElementById('searchCharityAddress').value.trim();
+      const result = document.getElementById('result');
+
+      if (!web3.utils.isAddress(addr) || name === "") {
+        result.innerHTML = "❌ Please enter a valid wallet address and charity name.";
+        return;
+      }
+
+      try {
+        const verified = await verifyContract.methods.verifyCharity(addr, name).call();
+        result.innerHTML = verified
+          ? `✅ <strong>${name}</strong> is a <span style="color:#00ffcc">verified charity</span>.`
+          : `⚠️ <strong>${name}</strong> is <span style="color:#ff6666">not verified</span>.`;
+      } catch (error) {
+        console.error(error);
+        result.innerHTML = "❌ Error checking verification status.";
+      }
+    }
+    async function loadUserProfile() {
+    const roleMap = { 0: "Unregistered", 1: "Donor", 2: "Charity Collector" };
+
+    const accounts = await web3.eth.getAccounts();
+    const user = accounts[0];
+
+    const roleContract = new web3.eth.Contract(roleContractABI, roleContractAddress);
+    const userInfo = await roleContract.methods.users(user).call();
+
+    document.getElementById("walletAddress").innerText = user;
+    document.getElementById("profileName").innerText = userInfo.username || "Unknown User";
+    document.getElementById("profileRole").innerText = roleMap[userInfo.role] || "Unknown Role";
+    document.getElementById("profileInitials").innerText = userInfo.username
+    ? userInfo.username[0].toUpperCase()
+    : "?";
+   }
+
+  </script>
+
+</body>
+</html>
