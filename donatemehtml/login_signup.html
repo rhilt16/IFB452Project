@@ -28,20 +28,40 @@
       color: #00ffcc;
     }
     select, input, button {
-      width: 100%;
+      width: 90%;
       padding: 0.75rem;
       margin-top: 0.75rem;
       border: none;
       border-radius: 8px;
       font-size: 1rem;
+      align-items: center;
     }
-    select, input {
+    input {
       background: #2a2a2e;
       color: #f1f1f1;
     }
+
+    select {
+      background-color: #2a2a2e;
+      color: #f1f1f1;
+      border: none;
+      border-radius: 8px;
+      padding: 0.75rem;
+      font-size: 1rem;
+      width: 96%;
+      appearance: none;
+      outline: none;
+    }
+
+    select:focus {
+      border: 2px solid #00ffcc;
+      box-shadow: 0 0 0 3px rgba(0, 255, 204, 0.2);
+     }
     button {
       background-color: #00ffcc;
       color: #000;
+      width: 97%;
+      align-items: center;
       font-weight: bold;
       cursor: pointer;
       transition: background 0.3s ease;
@@ -59,12 +79,25 @@
       text-decoration: none;
       font-weight: bold;
     }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .logo img {
+      height: 140px;
+      margin-left: 12px;
+      margin-bottom: -10px;
+
+    }
   </style>
 </head>
 <body>
 
   <div class="container" id="loginContainer">
-    <h2>Login to DonateMe</h2>
+    <div class="logo">
+      <img src="/Users/sanvimehra/Documents/front end blockchain/Tech brand-3.png" alt="DonateMe Logo">
+    </div>
     <select>
       <option value="donor">Login as Donor</option>
       <option value="collector">Login as Charity Collector</option>
@@ -78,7 +111,9 @@
   </div>
 
   <div class="container" id="signupContainer" style="display:none;">
-    <h2>Sign Up to DonateMe</h2>
+    <div class="logo">
+      <img src="/Users/sanvimehra/Documents/front end blockchain/Tech brand-3.png" alt="DonateMe Logo">
+    </div>
     <select>
       <option value="donor">Sign Up as Donor</option>
       <option value="collector">Sign Up as Charity Collector</option>

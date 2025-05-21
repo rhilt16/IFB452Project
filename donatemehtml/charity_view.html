@@ -6,12 +6,99 @@
   <title>Milestone Progress - DonateMe</title>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      color: #fff;
-      margin: 0;
-      padding: 2rem;
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(180deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  color: #ffffff;
+}
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #1b1b1e;
+      padding: 1rem 2rem;
+      border-bottom: 2px solid #00ffcc;
+      position: sticky;
+      top: 0;
+      z-index: 999;
     }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .logo img {
+      height: 120px;
+      margin-left: -20px;
+
+    }
+
+    nav a {
+      color: #00ffcc;
+      margin: 0 1rem;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      color: #ffffff;
+    }
+
+    .profile-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: #1c1c1e;
+      padding: 0.5rem 1rem;
+      border-radius: 30px;
+      border: 2px solid #00ffcc;
+    }
+
+    .profile-badge span {
+      background-color: #00ffcc;
+      color: #000;
+      font-weight: bold;
+      font-size: 1rem;
+      padding: 0.5rem;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      text-align: center;
+    }
+
+    main {
+  max-width: 700px;
+  margin: 4rem auto;
+  padding: 2rem 2.5rem;
+  background: rgba(28, 28, 30, 0.95);
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  width: 90%;
+}
+
+@media (max-width: 600px) {
+  nav a {
+    font-size: 0.9rem;
+    margin: 0 0.5rem;
+  }
+
+  .profile-badge {
+    flex-direction: column;
+    padding: 0.5rem;
+    text-align: center;
+  }
+
+  main {
+    margin: 2rem auto;
+    padding: 1rem;
+  }
+}
+
     h1 {
       color: #00ffcc;
       text-align: center;
@@ -38,45 +125,29 @@
     button:hover {
       background-color: #00e6b8;
     }
-    .profile-badge {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  background: #1c1c1e;
-  padding: 0.5rem 1rem;
-  border-radius: 30px;
-  border: 2px solid #00ffcc;
-  color: #fff;
-}
-.profile-badge span {
-  background-color: #00ffcc;
-  color: #000;
-  font-weight: bold;
-  font-size: 1rem;
-  padding: 0.5rem;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  text-align: center;
-}
-.profile-badge p {
-  margin: 0;
-  font-size: 0.9rem;
-}
-
+    
   </style>
 </head>
 <body>
-  <div class="profile-badge" id="profileBadge">
-    <span id="profileInitials">--</span>
-    <div>
-      <p id="profileName">Loading...</p>
-      <p id="profileRole">Checking role...</p>
+  <header>
+    <div class="logo">
+      <img src="/Users/sanvimehra/Documents/front end blockchain/Tech brand-3.png" alt="DonateMe Logo">
     </div>
-  </div>
+    <nav>
+      <a href="login_signup.html">Login</a>
+      <a href="createDonation.html">Create</a>
+      <a href="search_donation.html">Search</a>
+      <a href="donation_history.html">History</a>
+      <a href="charity_view.html">Milestones</a>
+    </nav>
+    <div class="profile-badge" id="profileBadge">
+      <span id="profileInitials">--</span>
+      <div>
+        <p id="profileName">Loading...</p>
+        <p id="profileRole">Checking role...</p>
+      </div>
+    </div>
+  </header>
   
   <h1>Milestone Progress & Fund Access</h1>
   <div id="milestoneList">Loading milestones...</div>
