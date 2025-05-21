@@ -8,13 +8,13 @@ contract CharityVerificationContract {
     
     function verifyCharity(address charityAddress, string memory name) external pure returns (bool success) {
         
-        string[3] memory registeredCharities = [
+        string[3] memory registeredCharities  = [
             "C1", 
             "C2", 
             "C3"
-        ];
+        ] ;
 
-        address[3] memory registeredAddresses = [
+        address[3]  memory registeredAddresses = [
             0x5B38Da6a701c568545dCfcB03FcB875f56beddC4,
             0x5B38Da6a701c568545dCfcB03FcB875f56beddC4,
             0x5B38Da6a701c568545dCfcB03FcB875f56beddC4
