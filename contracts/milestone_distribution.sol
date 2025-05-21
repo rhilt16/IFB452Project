@@ -10,14 +10,14 @@ contract DistributionContract {
  
     uint256 public charityCount;
 
-    string private role;
+    
     address roleContractAdd;
 
     constructor(address _roleContract) {
         roleContractAdd = address(_roleContract);
-        role = IRoles(roleContractAdd).getMyRole();
+        
     }
-
+   
     struct CharityDetails {
         string name;
         address charityAddress;
@@ -27,14 +27,16 @@ contract DistributionContract {
     }
 
     modifier isDonor() {
-        require(keccak256(abi.encodePacked(role)) == "donor", "Not a valid donor");
-        _;
-    }
+    string memory role = IRoles(roleContractAdd).getMyRole();
+    require(keccak256(abi.encodePacked(role)) == keccak256(abi.encodePacked("donor")), "Not a valid donor");
+    _;
+}
 
-    modifier isCharity() {
-        require(keccak256(abi.encodePacked(role)) == "charity", "Not a valid charity");
-        _;
-    }
+modifier isCharity() {
+    string memory role = IRoles(roleContractAdd).getMyRole();
+    require(keccak256(abi.encodePacked(role)) == keccak256(abi.encodePacked("charity")), "Not a valid charity");
+    _;
+}
   
     mapping (uint256 => CharityDetails) public charities;
     event CharityCreated(uint charityID, string name, address charityAddress, uint totalRaised, uint targetDonation, bool fundsLocked);

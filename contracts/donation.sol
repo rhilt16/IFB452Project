@@ -32,7 +32,7 @@ contract DonationContract {
     mapping (uint256 => Donation) public donations;
     // Counter to keep track of the total number of quality contracts
     uint256 public donationCount; 
-    string private role;
+   
     
     // Event triggered when a new donation is completed
     event DonationCreated(uint256 donationID, string charity, address charityAdd, address donorAdd, uint donationAmount);
@@ -42,15 +42,17 @@ contract DonationContract {
         verifyContractAdd = address(_verify);
         milestoneAdd = address(_milestone);
         roleContractAdd = address(_roleContract);
-        role = IRoles(roleContractAdd).getMyRole();
+        
     }
 
     modifier isDonor() {
+        string memory role = IRoles(roleContractAdd).getMyRole();
         require(keccak256(abi.encodePacked(role)) == "donor", "Not a valid donor");
         _;
     }
 
     modifier isCharity() {
+        string memory role = IRoles(roleContractAdd).getMyRole();
         require(keccak256(abi.encodePacked(role)) == "charity", "Not a valid charity");
         _;
     }
