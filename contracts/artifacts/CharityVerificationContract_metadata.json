@@ -9,17 +9,6 @@
 				"inputs": [
 					{
 						"internalType": "address",
-						"name": "_roleContract",
-						"type": "address"
-					}
-				],
-				"stateMutability": "nonpayable",
-				"type": "constructor"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "address",
 						"name": "charityAddress",
 						"type": "address"
 					},
@@ -69,11 +58,11 @@
 	},
 	"sources": {
 		"contracts/charity_verification.sol": {
-			"keccak256": "0xfacfc202faa2281d2ab0d742ca3f1c8e433421fef04032459e836520bf52ee89",
+			"keccak256": "0x66b613a51528bb6f48cac0373f4f06347a4bc105477b4ad0e43057f8f094c7c2",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://08b66e033efe95c0c48e8cf98f25eba2226b6c971067ca5889305bcba92f0dad",
-				"dweb:/ipfs/QmRVLQCQQWagQ6epfRSDVKHXvsZFyXBnFEPeV8dKNkWZyN"
+				"bzz-raw://f6eca6fb54c3d65458ee5bcf56746e9800232a46c22159d98ca127d41df1666c",
+				"dweb:/ipfs/QmfBL9X79pjtiWEvRiC7MxSeC8R7LZGwsHtCVQn7jX61Me"
 			]
 		}
 	},

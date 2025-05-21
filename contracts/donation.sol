@@ -51,7 +51,7 @@ contract DonationContract {
     }
 
     modifier isCharity() {
-        require(keccak256(abi.encodePacked(role)) == "collector", "Not a valid charity");
+        require(keccak256(abi.encodePacked(role)) == "charity", "Not a valid charity");
         _;
     }
 
