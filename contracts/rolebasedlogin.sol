@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 contract RoleBasedLogin {
     
     // Define roles for users
-    enum Role { None, Donor, Collector }
+    enum Role { None, Donor, Charity }
 
     // Structure to hold user information
     struct User {
@@ -60,7 +60,7 @@ contract RoleBasedLogin {
         bytes32 roleHash = keccak256(abi.encodePacked(_role));
         
         if (roleHash == keccak256("donor")) return Role.Donor;
-        if (roleHash == keccak256("collector")) return Role.Collector;
+        if (roleHash == keccak256("charity")) return Role.Charity;
 
         return Role.None; // If input doesn't match known roles
     }
@@ -70,7 +70,7 @@ contract RoleBasedLogin {
      */
     function getRoleAsString(Role _role) internal pure returns (string memory) {
         if (_role == Role.Donor) return "donor";
-        if (_role == Role.Collector) return "collector";
+        if (_role == Role.Charity) return "charity";
         return "none";
     }
 
