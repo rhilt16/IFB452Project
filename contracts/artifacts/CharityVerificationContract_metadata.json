@@ -58,11 +58,11 @@
 	},
 	"sources": {
 		"contracts/charity_verification.sol": {
-			"keccak256": "0x66b613a51528bb6f48cac0373f4f06347a4bc105477b4ad0e43057f8f094c7c2",
+			"keccak256": "0xff375626f8d4e58bcf15e9a99f2dd347118b4c02eda8a172f5a12a1c2dda37b0",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://f6eca6fb54c3d65458ee5bcf56746e9800232a46c22159d98ca127d41df1666c",
-				"dweb:/ipfs/QmfBL9X79pjtiWEvRiC7MxSeC8R7LZGwsHtCVQn7jX61Me"
+				"bzz-raw://0052e832b85f505dbf3aedf00b2df41ebce729524f91853eb2ea0a51aa6fccbc",
+				"dweb:/ipfs/QmRzzkUjojmMRANR37apBc55A1hVK93uSisoj2piiy4U9C"
 			]
 		}
 	},

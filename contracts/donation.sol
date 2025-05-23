@@ -32,7 +32,7 @@ contract DonationContract {
     mapping (uint256 => Donation) public donations;
     // Counter to keep track of the total number of quality contracts
     uint256 public donationCount; 
-    string private role;
+   
     
     // Event triggered when a new donation is completed
     event DonationCreated(uint256 donationID, string charity, address charityAdd, address donorAdd, uint donationAmount);
@@ -42,21 +42,23 @@ contract DonationContract {
         verifyContractAdd = address(_verify);
         milestoneAdd = address(_milestone);
         roleContractAdd = address(_roleContract);
-        role = IRoles(roleContractAdd).getMyRole();
+        
     }
 
     modifier isDonor() {
-        require(keccak256(abi.encodePacked(role)) == "donor", "Not a valid donor");
+        string memory role = IRoles(roleContractAdd).getMyRole();
+        require(keccak256(abi.encodePacked(role)) == keccak256(abi.encodePacked("donor")),"Not a valid donor");
         _;
     }
 
     modifier isCharity() {
-        require(keccak256(abi.encodePacked(role)) == "charity", "Not a valid charity");
+        string memory role = IRoles(roleContractAdd).getMyRole();
+        require(keccak256(abi.encodePacked(role)) ==keccak256(abi.encodePacked("charity")), "Not a valid charity");
         _;
     }
 
 
-    function donate(string memory _charity, address charityAdd, address donorAdd, uint _donationAmount) public payable isDonor  {
+    function donate(string memory _charity, address charityAdd, address donorAdd, uint _donationAmount) public {
         if(!(ICharityVerify(verifyContractAdd).verifyCharity(charityAdd, _charity))){
             revert("not valid");
         }
@@ -122,6 +124,8 @@ contract DonationContract {
 
         return donationsArray;
     }
+
+    
 
     function getAllDonations() public view returns (Donation[] memory) {
         // Create array to hold donations

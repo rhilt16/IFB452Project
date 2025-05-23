@@ -88,7 +88,7 @@
 				],
 				"name": "donate",
 				"outputs": [],
-				"stateMutability": "payable",
+				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -284,11 +284,11 @@
 	},
 	"sources": {
 		"contracts/donation.sol": {
-			"keccak256": "0xe6f2066b7eafdf9bab7403c3b93037580494458025a1bf6693fd7c9767e2db4a",
+			"keccak256": "0x75ca03d7afa23981cb5599e35eccd9333a08a4bcd510a987d314c65fd4db838a",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://cf4bd53428d11523e4cf7e17b994d4ea295e05bb38566243dd38a2aed748c28c",
-				"dweb:/ipfs/QmeK2keb8t3ivfy4z8CtPTLJ3fvyGs1WiSGJgPMCL3yT6s"
+				"bzz-raw://c0ab885d0a87343cfaa61c52486b0694a8b51569727912bee259f87a43eeb9e6",
+				"dweb:/ipfs/Qmd59qAwMewJShN5eQQb6AEjxg8b9BEsft3q7Pa7mqvwhC"
 			]
 		}
 	},

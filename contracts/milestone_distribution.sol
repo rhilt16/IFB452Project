@@ -10,14 +10,10 @@ contract DistributionContract {
  
     uint256 public charityCount;
 
-    string private role;
+    
     address roleContractAdd;
 
-    constructor(address _roleContract) {
-        roleContractAdd = address(_roleContract);
-        role = IRoles(roleContractAdd).getMyRole();
-    }
-
+   
     struct CharityDetails {
         string name;
         address charityAddress;
@@ -26,15 +22,6 @@ contract DistributionContract {
         bool fundsLocked;
     }
 
-    modifier isDonor() {
-        require(keccak256(abi.encodePacked(role)) == "donor", "Not a valid donor");
-        _;
-    }
-
-    modifier isCharity() {
-        require(keccak256(abi.encodePacked(role)) == "charity", "Not a valid charity");
-        _;
-    }
   
     mapping (uint256 => CharityDetails) public charities;
     event CharityCreated(uint charityID, string name, address charityAddress, uint totalRaised, uint targetDonation, bool fundsLocked);
@@ -46,10 +33,11 @@ contract DistributionContract {
                 return x;        
             }
         }
+
         return -1;
     }
 
-    function contributeFunds(string memory _charity, uint _amount) external isDonor  {
+    function contributeFunds(string memory _charity, uint _amount) external  {
         int _charityIndex = charityExists(_charity);
         if(_charityIndex == -1){
             
@@ -66,7 +54,7 @@ contract DistributionContract {
         
     } 
 
-    function addCharity(string memory _name, address _charityAddress) private {
+    function addCharity(string memory _name, address _charityAddress) public {
         // Increment contractCount to generate a unique contract ID
         charityCount++;
 

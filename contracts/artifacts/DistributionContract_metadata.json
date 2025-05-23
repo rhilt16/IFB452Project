@@ -6,17 +6,6 @@
 	"output": {
 		"abi": [
 			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "_roleContract",
-						"type": "address"
-					}
-				],
-				"stateMutability": "nonpayable",
-				"type": "constructor"
-			},
-			{
 				"anonymous": false,
 				"inputs": [
 					{
@@ -58,6 +47,24 @@
 				],
 				"name": "CharityCreated",
 				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_name",
+						"type": "string"
+					},
+					{
+						"internalType": "address",
+						"name": "_charityAddress",
+						"type": "address"
+					}
+				],
+				"name": "addCharity",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
 			},
 			{
 				"inputs": [
@@ -177,11 +184,11 @@
 	},
 	"sources": {
 		"contracts/milestone_distribution.sol": {
-			"keccak256": "0x39ee0215118e69fc5ff73394094b373ad49d5c8b57223d1fa29ac0f1a4752edc",
+			"keccak256": "0xceec282335e1d2e15f17d8e898f2b6af0979bc3a88c0ab7979a3a928cbcbce17",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://d6bdc4214b878953caea7b56ec98e3d0ad9f645de3c3479d6c1466e857e2464c",
-				"dweb:/ipfs/QmPH1MXUKh2nBdT6sGh7eobike4pzPmsD9DBQVcXpmMeME"
+				"bzz-raw://131c46390a2097f5c1611da26e9c86dedb7f11a1359d14d03ff1466bc773fbc4",
+				"dweb:/ipfs/QmNxFQLZ5ry7XgUrzCC9FeLVhyGfse7hMCAoan944nYykz"
 			]
 		}
 	},
