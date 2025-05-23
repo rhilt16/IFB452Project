@@ -209,7 +209,7 @@
     <button onclick="createCampaign()">Create Campaign</button>
 
     <div id="status"></div>
-
+<script src="https://cdn.jsdelivr.net/npm/web3@1.3.6/dist/web3.min.js"></script>
   <script>
     async function createCampaign() {
       const title = document.getElementById('campaignTitle').value;
@@ -234,18 +234,115 @@
 
       document.getElementById('status').innerText = "Campaign created (mock). Ready for contract integration.";
     }
+    const roleContractAddress = "0xbFD8cc6E9014cBb15685823405F68358f69338d7";
+    const roleContractABI = [
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_username",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_role",
+				"type": "string"
+			}
+		],
+		"name": "register",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "enum RoleBasedLogin.Role",
+				"name": "role",
+				"type": "uint8"
+			}
+		],
+		"name": "UserLoggedIn",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "username",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "enum RoleBasedLogin.Role",
+				"name": "role",
+				"type": "uint8"
+			}
+		],
+		"name": "UserRegistered",
+		"type": "event"
+	},
+	{
+		"inputs": [],
+		"name": "getMyRole",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "login",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "success",
+				"type": "bool"
+			},
+			{
+				"internalType": "string",
+				"name": "role",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+];
+
     async function loadUserProfile() {
     const roleMap = { 0: "Unregistered", 1: "Donor", 2: "Charity Collector" };
-
+    
     const accounts = await web3.eth.getAccounts();
     const user = accounts[0];
+    console.log(user);
 
     const roleContract = new web3.eth.Contract(roleContractABI, roleContractAddress);
-    const userInfo = await roleContract.methods.users(user).call();
-
-    document.getElementById("walletAddress").innerText = user;
-    document.getElementById("profileName").innerText = userInfo.username || "Unknown User";
-    document.getElementById("profileRole").innerText = roleMap[userInfo.role] || "Unknown Role";
+    const userInfo = await roleContract.methods.getMyRole().call({from: user});
+    console.log(userInfo);
+    document.getElementById("profileName").innerText = user || "Unknown User";
+    document.getElementById("profileRole").innerText = userInfo || "Unknown Role";
     document.getElementById("profileInitials").innerText = userInfo.username
     ? userInfo.username[0].toUpperCase()
     : "?";
