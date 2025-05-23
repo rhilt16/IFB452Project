@@ -52,6 +52,19 @@ contract RoleBasedLogin {
         return (true, userRole);
     }
 
+    function logout() public returns (bool success) {
+        
+        if(!users[msg.sender].isRegistered){
+            return false;
+        }
+        users[msg.sender] = User("", Role.None, false);
+        users[msg.sender].isRegistered = false;
+        
+        // Emit an event for successful logout
+        emit UserLoggedIn(msg.sender, users[msg.sender].role);
+        return true;
+    }
+
     /**
      * INTERNAL: Converts a string to a Role enum.
      * - Accepts only "donor" or "collector".
@@ -80,5 +93,10 @@ contract RoleBasedLogin {
     function getMyRole() public view returns (string memory) {
         require(users[msg.sender].isRegistered, "Not registered");
         return getRoleAsString(users[msg.sender].role);
+    }
+
+    function getMyDetails() public view returns (User memory) {
+        require(users[msg.sender].isRegistered, "Not logged in");
+        return users[msg.sender];
     }
 }

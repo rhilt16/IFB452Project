@@ -21,8 +21,8 @@ contract DistributionContract {
         uint targetDonation;// Target amount of money to reach
         bool fundsLocked;
     }
-
-  
+    
+    
     mapping (uint256 => CharityDetails) public charities;
     event CharityCreated(uint charityID, string name, address charityAddress, uint totalRaised, uint targetDonation, bool fundsLocked);
 

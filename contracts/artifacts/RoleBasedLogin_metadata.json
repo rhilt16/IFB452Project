@@ -51,6 +51,36 @@
 			},
 			{
 				"inputs": [],
+				"name": "getMyDetails",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "username",
+								"type": "string"
+							},
+							{
+								"internalType": "enum RoleBasedLogin.Role",
+								"name": "role",
+								"type": "uint8"
+							},
+							{
+								"internalType": "bool",
+								"name": "isRegistered",
+								"type": "bool"
+							}
+						],
+						"internalType": "struct RoleBasedLogin.User",
+						"name": "",
+						"type": "tuple"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
 				"name": "getMyRole",
 				"outputs": [
 					{
@@ -78,6 +108,19 @@
 					}
 				],
 				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "logout",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "success",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -137,11 +180,11 @@
 	},
 	"sources": {
 		"contracts/rolebasedlogin.sol": {
-			"keccak256": "0x300f7f7e49dfbed6611aa407148c5782ae8296503a6a0aae67030622d119887c",
+			"keccak256": "0x526f4f13df57820164c923a6f25a60d7a7b7dde22157bcece088549b861f952e",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://daf240f311e1d472607f9c75f9bd37428124ac22546e573e80654275bf03cbb0",
-				"dweb:/ipfs/QmQxGuUhj8AEvWkckjVbtTBFksR7bGnfe1sccgopFrn1Zk"
+				"bzz-raw://ead4a5cf875712445cb74cbcf765a9f5d32f0e8b6f5939b4f99638f5e68a392e",
+				"dweb:/ipfs/QmYLLY41hWpAXvNGvUHNmrozr6mV7JHzwW71hCnkYKmeau"
 			]
 		}
 	},
