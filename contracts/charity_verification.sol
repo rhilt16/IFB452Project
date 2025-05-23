@@ -9,15 +9,15 @@ contract CharityVerificationContract {
     function verifyCharity(address charityAddress, string memory name) external pure returns (bool success) {
         
         string[3] memory registeredCharities  = [
-            "C1", 
-            "C2", 
-            "C3"
+            "American Red Cross", 
+            "The Salvation Army Australia", 
+            "Save The Children"
         ] ;
 
         address[3]  memory registeredAddresses = [
             0x5B38Da6a701c568545dCfcB03FcB875f56beddC4,
-            0x5B38Da6a701c568545dCfcB03FcB875f56beddC4,
-            0x5B38Da6a701c568545dCfcB03FcB875f56beddC4
+            0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2,
+            0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db
         ];
 
         for (uint i; i < registeredCharities.length; i++) {
