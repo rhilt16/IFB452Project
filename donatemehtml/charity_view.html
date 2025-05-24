@@ -6,14 +6,14 @@
   <title>Milestone Progress - DonateMe</title>
   <style>
     body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(180deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: cover;
-  color: #ffffff;
-}
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(180deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: cover;
+      color: #ffffff;
+    }
     header {
       display: flex;
       justify-content: space-between;
@@ -25,30 +25,24 @@
       top: 0;
       z-index: 999;
     }
-
     .logo {
       display: flex;
       align-items: center;
       gap: 0.75rem;
     }
-
     .logo img {
       height: 120px;
       margin-left: -20px;
-
     }
-
     nav a {
       color: #00ffcc;
       margin: 0 1rem;
       text-decoration: none;
       font-weight: bold;
     }
-
     nav a:hover {
       color: #ffffff;
     }
-
     .profile-badge {
       display: flex;
       align-items: center;
@@ -58,7 +52,6 @@
       border-radius: 30px;
       border: 2px solid #00ffcc;
     }
-
     .profile-badge span {
       background-color: #00ffcc;
       color: #000;
@@ -70,35 +63,30 @@
       height: 36px;
       text-align: center;
     }
-
     main {
-  max-width: 700px;
-  margin: 4rem auto;
-  padding: 2rem 2.5rem;
-  background: rgba(28, 28, 30, 0.95);
-  border-radius: 12px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-  width: 90%;
-}
-
-@media (max-width: 600px) {
-  nav a {
-    font-size: 0.9rem;
-    margin: 0 0.5rem;
-  }
-
-  .profile-badge {
-    flex-direction: column;
-    padding: 0.5rem;
-    text-align: center;
-  }
-
-  main {
-    margin: 2rem auto;
-    padding: 1rem;
-  }
-}
-
+      max-width: 700px;
+      margin: 4rem auto;
+      padding: 2rem 2.5rem;
+      background: rgba(28, 28, 30, 0.95);
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+      width: 90%;
+    }
+    @media (max-width: 600px) {
+      nav a {
+        font-size: 0.9rem;
+        margin: 0 0.5rem;
+      }
+      .profile-badge {
+        flex-direction: column;
+        padding: 0.5rem;
+        text-align: center;
+      }
+      main {
+        margin: 2rem auto;
+        padding: 1rem;
+      }
+    }
     h1 {
       color: #00ffcc;
       text-align: center;
@@ -125,7 +113,17 @@
     button:hover {
       background-color: #00e6b8;
     }
-    
+    .add-section {
+      text-align: center;
+      margin-top: 2rem;
+    }
+    input[type="text"], input[type="number"] {
+      padding: 0.5rem;
+      margin: 0.5rem;
+      width: 40%;
+      border-radius: 6px;
+      border: none;
+    }
   </style>
 </head>
 <body>
@@ -148,213 +146,133 @@
       </div>
     </div>
   </header>
-  
+
   <h1>Milestone Progress & Fund Access</h1>
   <div id="milestoneList">Loading milestones...</div>
 
+  <div class="add-section">
+    <h2>Add New Milestone</h2>
+    <input type="text" id="milestoneDesc" placeholder="Milestone Description">
+    <input type="number" id="milestoneAmount" placeholder="Amount in Wei">
+    <button onclick="addMilestone()">Add Milestone</button>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/web3@1.3.6/dist/web3.min.js"></script>
   <script>
-    const distributionContractAddress = "0xFEC8358b2B074C8AE2F3DA1a00c58B834638dc1D"; // Replace with your actual address
-
+    const distributionContractAddress = "0x4c06Ec565Ae1Da79C7d3C6C330910AA1FA7A9b9c";
     const distributionABI = [
       {
-        "inputs": [{ "internalType": "address", "name": "_charity", "type": "address" }],
-        "name": "getMilestonesByCharity",
-        "outputs": [{
-          "components": [
-            { "internalType": "string", "name": "milestoneName", "type": "string" },
-            { "internalType": "uint256", "name": "amount", "type": "uint256" },
-            { "internalType": "bool", "name": "isComplete", "type": "bool" },
-            { "internalType": "bool", "name": "isWithdrawn", "type": "bool" }
-          ],
-          "internalType": "struct DistributionContract.Milestone[]",
-          "name": "",
-          "type": "tuple[]"
-        }],
+        "inputs": [
+          { "internalType": "string", "name": "_name", "type": "string" },
+          { "internalType": "address", "name": "_charityAddress", "type": "address" },
+          { "internalType": "string", "name": "_milestoneDescription", "type": "string" }
+        ],
+        "name": "addCharity",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "uint256", "name": "id", "type": "uint256" }
+        ],
+        "name": "getCharityById",
+        "outputs": [
+          { "internalType": "string", "name": "name", "type": "string" },
+          { "internalType": "address", "name": "charityAddress", "type": "address" },
+          { "internalType": "uint256", "name": "totalRaised", "type": "uint256" },
+          { "internalType": "uint256", "name": "targetDonation", "type": "uint256" },
+          { "internalType": "bool", "name": "fundsLocked", "type": "bool" },
+          { "internalType": "string", "name": "milestoneDescription", "type": "string" },
+          { "internalType": "bool", "name": "isMilestoneComplete", "type": "bool" }
+        ],
         "stateMutability": "view",
         "type": "function"
       },
       {
-        "inputs": [{ "internalType": "uint256", "name": "_index", "type": "uint256" }],
-        "name": "withdrawMilestoneFunds",
+        "inputs": [],
+        "name": "charityCount",
+        "outputs": [
+          { "internalType": "uint256", "name": "", "type": "uint256" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "uint256", "name": "charityID", "type": "uint256" }
+        ],
+        "name": "markMilestoneComplete",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
       }
     ];
-    const roleContractAddress = "0xbFD8cc6E9014cBb15685823405F68358f69338d7";
-    const roleContractABI = [
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_username",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_role",
-				"type": "string"
-			}
-		],
-		"name": "register",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "user",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "enum RoleBasedLogin.Role",
-				"name": "role",
-				"type": "uint8"
-			}
-		],
-		"name": "UserLoggedIn",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "user",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "username",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"internalType": "enum RoleBasedLogin.Role",
-				"name": "role",
-				"type": "uint8"
-			}
-		],
-		"name": "UserRegistered",
-		"type": "event"
-	},
-	{
-		"inputs": [],
-		"name": "getMyRole",
-		"outputs": [
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "login",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "success",
-				"type": "bool"
-			},
-			{
-				"internalType": "string",
-				"name": "role",
-				"type": "string"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	}
-];
 
     let web3;
     let contract;
     let currentAccount;
 
     window.addEventListener('load', async () => {
-      const listDiv = document.getElementById('milestoneList');
-
       if (window.ethereum) {
         web3 = new Web3(window.ethereum);
         await window.ethereum.enable();
         const accounts = await web3.eth.getAccounts();
         currentAccount = accounts[0];
-        
         contract = new web3.eth.Contract(distributionABI, distributionContractAddress);
-        await loadUserProfile();
-        try {
-          const milestones = await contract.methods.getMilestonesByCharity(currentAccount).call();
-
-          if (milestones.length === 0) {
-            listDiv.innerHTML = "No milestones found for your account.";
-            return;
-          }
-
-          let html = '';
-          milestones.forEach((m, i) => {
-            html += `
-              <div class="milestone-box">
-                <p><strong>Milestone:</strong> ${m.milestoneName}</p>
-                <p><strong>Amount:</strong> ${web3.utils.fromWei(m.amount)} ETH</p>
-                <p><strong>Status:</strong> ${m.isComplete ? "✅ Complete" : "⏳ Pending"}</p>
-                <p><strong>Withdrawn:</strong> ${m.isWithdrawn ? "✅ Yes" : "❌ No"}</p>
-                ${m.isComplete && !m.isWithdrawn ? `<button onclick="withdraw(${i})">Withdraw Funds</button>` : ""}
-              </div>`;
-          });
-
-          listDiv.innerHTML = html;
-
-        } catch (err) {
-          console.error(err);
-          listDiv.innerHTML = "Error loading milestones.";
-        }
-
+        loadMilestones();
       } else {
-        listDiv.innerHTML = "Please install MetaMask to continue.";
+        alert("Please install MetaMask to continue.");
       }
     });
-    async function loadUserProfile() {
-    const roleMap = { 0: "Unregistered", 1: "Donor", 2: "Charity Collector" };
-    
-    const accounts = await web3.eth.getAccounts();
-    const user = accounts[0];
-    console.log(user);
 
-    const roleContract = new web3.eth.Contract(roleContractABI, roleContractAddress);
-    const userInfo = await roleContract.methods.getMyRole().call({from: user});
-    console.log(userInfo);
-    document.getElementById("profileName").innerText = user || "Unknown User";
-    document.getElementById("profileRole").innerText = userInfo || "Unknown Role";
-    document.getElementById("profileInitials").innerText = userInfo.username
-    ? userInfo.username[0].toUpperCase()
-    : "?";
-    }
+    async function loadMilestones() {
+      const milestoneDiv = document.getElementById('milestoneList');
+      milestoneDiv.innerHTML = "";
+      const count = await contract.methods.charityCount().call();
 
-
-    async function withdraw(index) {
-      try {
-        await contract.methods.withdrawMilestoneFunds(index).send({ from: currentAccount });
-        alert("Withdrawal successful!");
-        location.reload(); // Refresh to reflect updated status
-      } catch (error) {
-        console.error(error);
-        alert("Withdrawal failed. Make sure the milestone is complete and not already withdrawn.");
+      for (let i = 1; i <= count; i++) {
+        const data = await contract.methods.getCharityById(i).call();
+        if (data.charityAddress.toLowerCase() === currentAccount.toLowerCase()) {
+          milestoneDiv.innerHTML += `
+            <div class="milestone-box">
+              <p><strong>Charity Name:</strong> ${data.name}</p>
+              <p><strong>Milestone:</strong> ${data.milestoneDescription}</p>
+              <p><strong>Target:</strong> ${web3.utils.fromWei(data.targetDonation)} ETH</p>
+              <p><strong>Total Raised:</strong> ${web3.utils.fromWei(data.totalRaised)} ETH</p>
+              <p><strong>Status:</strong> ${data.isMilestoneComplete ? "✅ Complete" : "⏳ Pending"}</p>
+              ${!data.isMilestoneComplete ? `<button onclick="markComplete(${i})">Mark as Complete</button>` : ""}
+            </div>
+          `;
+        }
       }
     }
-  
-  </script>
 
+    async function addMilestone() {
+      const desc = document.getElementById('milestoneDesc').value;
+      const amt = document.getElementById('milestoneAmount').value;
+      if (!desc || !amt) return alert("Please fill out all fields.");
+
+      try {
+        await contract.methods.addCharity("MyCharity", currentAccount, desc).send({ from: currentAccount });
+        alert("Milestone added successfully!");
+        loadMilestones();
+      } catch (err) {
+        console.error(err);
+        alert("Failed to add milestone.");
+      }
+    }
+
+    async function markComplete(charityId) {
+      try {
+        await contract.methods.markMilestoneComplete(charityId).send({ from: currentAccount });
+        alert("Milestone marked as complete!");
+        loadMilestones();
+      } catch (err) {
+        console.error(err);
+        alert("Failed to mark milestone as complete.");
+      }
+    }
+  </script>
 </body>
 </html>
