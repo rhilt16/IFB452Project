@@ -70,13 +70,14 @@ contract RoleBasedLogin {
      * - Accepts only "donor" or "collector".
      */
     function getRoleFromString(string memory _role) internal pure returns (Role) {
-        bytes32 roleHash = keccak256(abi.encodePacked(_role));
-        
-        if (roleHash == keccak256("donor")) return Role.Donor;
-        if (roleHash == keccak256("charity")) return Role.Charity;
+    bytes32 roleHash = keccak256(abi.encodePacked(_role));
 
-        return Role.None; // If input doesn't match known roles
-    }
+    if (roleHash == keccak256(abi.encodePacked("donor"))) return Role.Donor;
+    if (roleHash == keccak256(abi.encodePacked("charity"))) return Role.Charity;
+
+    return Role.None;
+}
+
 
     /**
      * INTERNAL: Converts a Role enum to a readable string.
