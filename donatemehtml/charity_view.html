@@ -182,26 +182,8 @@
         "type": "function"
       }
     ];
-    const roleContractAddress = "0xbFD8cc6E9014cBb15685823405F68358f69338d7";
+        const roleContractAddress = "0x0f057f263796c64fA19f00A9fC1110BE896A3859";
     const roleContractABI = [
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_username",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_role",
-				"type": "string"
-			}
-		],
-		"name": "register",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
 	{
 		"anonymous": false,
 		"inputs": [
@@ -248,6 +230,36 @@
 	},
 	{
 		"inputs": [],
+		"name": "getMyDetails",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "string",
+						"name": "username",
+						"type": "string"
+					},
+					{
+						"internalType": "enum RoleBasedLogin.Role",
+						"name": "role",
+						"type": "uint8"
+					},
+					{
+						"internalType": "bool",
+						"name": "isRegistered",
+						"type": "bool"
+					}
+				],
+				"internalType": "struct RoleBasedLogin.User",
+				"name": "",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
 		"name": "getMyRole",
 		"outputs": [
 			{
@@ -276,6 +288,37 @@
 		],
 		"stateMutability": "view",
 		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "logout",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "success",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_username",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_role",
+				"type": "string"
+			}
+		],
+		"name": "register",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
 	}
 ];
 
@@ -291,7 +334,7 @@
         await window.ethereum.enable();
         const accounts = await web3.eth.getAccounts();
         currentAccount = accounts[0];
-        
+
         contract = new web3.eth.Contract(distributionABI, distributionContractAddress);
         await loadUserProfile();
         try {

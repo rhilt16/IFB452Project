@@ -403,26 +403,8 @@
 	}
 ]
 
-    const roleContractAddress = "0xbFD8cc6E9014cBb15685823405F68358f69338d7";
+    const roleContractAddress = "0x0f057f263796c64fA19f00A9fC1110BE896A3859";
     const roleContractABI = [
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_username",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_role",
-				"type": "string"
-			}
-		],
-		"name": "register",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
 	{
 		"anonymous": false,
 		"inputs": [
@@ -469,6 +451,36 @@
 	},
 	{
 		"inputs": [],
+		"name": "getMyDetails",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "string",
+						"name": "username",
+						"type": "string"
+					},
+					{
+						"internalType": "enum RoleBasedLogin.Role",
+						"name": "role",
+						"type": "uint8"
+					},
+					{
+						"internalType": "bool",
+						"name": "isRegistered",
+						"type": "bool"
+					}
+				],
+				"internalType": "struct RoleBasedLogin.User",
+				"name": "",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
 		"name": "getMyRole",
 		"outputs": [
 			{
@@ -497,6 +509,37 @@
 		],
 		"stateMutability": "view",
 		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "logout",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "success",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_username",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_role",
+				"type": "string"
+			}
+		],
+		"name": "register",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
 	}
 ];
 
@@ -523,14 +566,15 @@
             return;
           }
 
-          let output = `<h3>Donations Made by ${userAddress}</h3>`;
+          let output = `<h3>Donations Made From ${userAddress}</h3>`;
           donations.forEach((donation, index) => {
             output += `
               <p><strong>#${index + 1}</strong></p>
               <p><strong>Charity:</strong> ${donation.charity}</p>
               <p><strong>Charity Wallet:</strong> ${donation.charityAdd}</p>
-              <p><strong>Amount:</strong> ${web3.utils.fromWei(donation.donationAmount)} ETH</p>
               <p><strong>Amount:</strong> $${donation.donationAmount}</p>
+              <p><strong>Transaction Fee:</strong> ${web3.utils.fromWei(donation.donationAmount)} ETH</p>
+              
               <hr>
             `;
           });
@@ -551,13 +595,13 @@
     
     const accounts = await web3.eth.getAccounts();
     const user = accounts[0];
-    console.log(user);
 
     const roleContract = new web3.eth.Contract(roleContractABI, roleContractAddress);
-    const userInfo = await roleContract.methods.getMyRole().call({from: user});
-    console.log(userInfo);
-    document.getElementById("profileName").innerText = user || "Unknown User";
-    document.getElementById("profileRole").innerText = userInfo || "Unknown Role";
+    
+    const userInfo = await roleContract.methods.getMyDetails().call({from: user});
+    const userRole = roleMap[userInfo.role] || "Unknown Role";
+    document.getElementById("profileName").innerText = userInfo.username || "Unknown User";
+    document.getElementById("profileRole").innerText = userRole || "Unknown Role";
     document.getElementById("profileInitials").innerText = userInfo.username
     ? userInfo.username[0].toUpperCase()
     : "?";
