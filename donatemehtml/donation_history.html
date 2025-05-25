@@ -600,6 +600,7 @@
     
     const userInfo = await roleContract.methods.getMyDetails().call({from: user});
     const userRole = roleMap[userInfo.role] || "Unknown Role";
+	console.log(userInfo);
     document.getElementById("profileName").innerText = userInfo.username || "Unknown User";
     document.getElementById("profileRole").innerText = userRole || "Unknown Role";
     document.getElementById("profileInitials").innerText = userInfo.username
