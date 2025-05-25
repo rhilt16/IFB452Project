@@ -180,11 +180,11 @@
 	},
 	"sources": {
 		"contracts/rolebasedlogin.sol": {
-			"keccak256": "0x526f4f13df57820164c923a6f25a60d7a7b7dde22157bcece088549b861f952e",
+			"keccak256": "0x0051598e312b80c35d1a676889c34441f8b4550ea639c04b959b2dbf0835eb18",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://ead4a5cf875712445cb74cbcf765a9f5d32f0e8b6f5939b4f99638f5e68a392e",
-				"dweb:/ipfs/QmYLLY41hWpAXvNGvUHNmrozr6mV7JHzwW71hCnkYKmeau"
+				"bzz-raw://6a4571f01ec48ec5c0f5d26d9224d9b572f930525b8a2f7fcf412a7f8f5777af",
+				"dweb:/ipfs/Qmc4yzgd8Rw4HeEeg7mNyooKjkGEWoMurLjdmKALqXeUTh"
 			]
 		}
 	},

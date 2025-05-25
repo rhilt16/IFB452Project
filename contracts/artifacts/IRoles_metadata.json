@@ -47,11 +47,11 @@
 	},
 	"sources": {
 		"contracts/milestone_distribution.sol": {
-			"keccak256": "0xceec282335e1d2e15f17d8e898f2b6af0979bc3a88c0ab7979a3a928cbcbce17",
+			"keccak256": "0x0cdf2fcf312ad908a382dd6abdd0d9b653e92d332e323fbab78b172dee59c998",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://131c46390a2097f5c1611da26e9c86dedb7f11a1359d14d03ff1466bc773fbc4",
-				"dweb:/ipfs/QmNxFQLZ5ry7XgUrzCC9FeLVhyGfse7hMCAoan944nYykz"
+				"bzz-raw://c9c8d142ca68837ac1faa04421e9384aa49c2f02f8cbe9540fd4fe9b5db6e97b",
+				"dweb:/ipfs/QmY9NFStHKyDwstbGuPoXSKKz2rneS5ncLLujEoL16Jsbb"
 			]
 		}
 	},

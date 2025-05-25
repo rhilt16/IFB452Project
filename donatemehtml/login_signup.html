@@ -119,8 +119,21 @@
 
   <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
   <script>
-    const contractAddress = "0xbFD8cc6E9014cBb15685823405F68358f69338d7";
+    const contractAddress = "0xBe63781949F1B1aAe00025787F8d6174Cbe99348";
     const contractABI = [
+	{
+		"inputs": [],
+		"name": "logout",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "success",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
 	{
 		"inputs": [
 			{
@@ -182,6 +195,36 @@
 		],
 		"name": "UserRegistered",
 		"type": "event"
+	},
+	{
+		"inputs": [],
+		"name": "getMyDetails",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "string",
+						"name": "username",
+						"type": "string"
+					},
+					{
+						"internalType": "enum RoleBasedLogin.Role",
+						"name": "role",
+						"type": "uint8"
+					},
+					{
+						"internalType": "bool",
+						"name": "isRegistered",
+						"type": "bool"
+					}
+				],
+				"internalType": "struct RoleBasedLogin.User",
+				"name": "",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
 	},
 	{
 		"inputs": [],
