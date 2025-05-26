@@ -26,14 +26,11 @@ contract DistributionContract {
         bool fundsLocked
     );
 
-    
-
     function addCharity(
         string memory _name,
         address _charityAddress,
         string memory _milestoneDescription
     ) public {
-        // Only users with role 'charity' can add a charity
         
         
         charityCount++;
@@ -42,7 +39,7 @@ contract DistributionContract {
             _name,
             _charityAddress,
             0,
-            100 ether, // 100 ETH target
+            100, // 100 ETH target
             true,
             _milestoneDescription,
             false
@@ -53,7 +50,7 @@ contract DistributionContract {
             _name,
             _charityAddress,
             0,
-            100 ether,
+            100,
             true
         );
     }
@@ -70,11 +67,11 @@ contract DistributionContract {
     }
 
     function markMilestoneComplete(uint256 charityID) public {
-        require(
-            msg.sender == charities[charityID].charityAddress,
-            "Only the charity can mark milestone complete"
-        );
-        charities[charityID].isMilestoneComplete = true;
+        if(charities[charityID].totalRaised >= charities[charityID].targetDonation) {
+            charities[charityID].isMilestoneComplete = true;
+        } else {
+            charities[charityID].isMilestoneComplete = false;
+        }
     }
 
     function updateMilestone(uint256 charityID, string memory newDescription) public {

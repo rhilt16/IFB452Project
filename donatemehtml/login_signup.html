@@ -71,6 +71,19 @@
       margin-left:-50px;
       margin-bottom: -10px;
     }
+    .logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+
+.logo img {
+  height: 120px;
+  margin-left: 0;
+}
+
   </style>
 </head>
 <body>
@@ -78,6 +91,8 @@
   <div class="container" id="loginContainer">
     <div class="logo">
       <img src="logo.png" alt="DonateMe Logo">
+      <img src="logo.png" alt="DonateMe Logo">
+
     </div>
     <select>
       <option value="donor">Login as Donor</option>
@@ -93,6 +108,7 @@
 
   <div class="container" id="signupContainer" style="display:none;">
     <div class="logo">
+      <img src="logo.png" alt="DonateMe Logo">
       <img src="logo.png" alt="DonateMe Logo">
     </div>
     <select>
@@ -120,6 +136,7 @@
   <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
   <script>
     const contractAddress = "0x143C4D89491924Fd16f0C323089F752133201eD1";
+    const contractAddress = "0x6652AB7EE901d828dAe2feF9b1cBfb2C7Cc245EB";
     const contractABI = [
 	{
 		"inputs": [],
