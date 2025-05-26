@@ -124,6 +124,10 @@
       border-radius: 6px;
       border: none;
     }
+
+    .nav-link {
+      display: none; /* hide all links by default */
+    }
   </style>
 </head>
 <body>
@@ -132,11 +136,12 @@
       <img src="/Users/sanvimehra/Documents/front end blockchain/Tech brand-3.png" alt="DonateMe Logo">
     </div>
     <nav>
-      <a href="login_signup.html">Login</a>
-      <a href="createDonation.html">Create</a>
-      <a href="search_donation.html">Search</a>
-      <a href="donation_history.html">History</a>
-      <a href="charity_view.html">Milestones</a>
+      <a href="login_signup.html" class="nav-link" data-role="Unregistered">Login</a>
+      <a href="createDonation.html" class="nav-link" data-role="Charity Collector">Create</a>
+      <a href="search_donation.html" class="nav-link" data-role="Donor">Search</a>
+      <a href="donation_history.html" class="nav-link" data-role="Donor">History</a>
+      <a href="charity_view.html" class="nav-link" data-role="Charity Collector">Milestones</a>
+      <button type="button" id="logout-btn" >Logout</button>
     </nav>
     <div class="profile-badge" id="profileBadge">
       <span id="profileInitials">--</span>
@@ -159,7 +164,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/web3@1.3.6/dist/web3.min.js"></script>
   <script>
-    const distributionContractAddress = "0x4c06Ec565Ae1Da79C7d3C6C330910AA1FA7A9b9c";
+    const distributionContractAddress = "0xd899d3695967D5F74c8684FD27D6910dB6bD01B4";
     const distributionABI = [
       {
         "inputs": [
@@ -208,6 +213,145 @@
         "type": "function"
       }
     ];
+    const roleContractAddress = "0x9bd4aAAc86E58D28c4e7c36642c57FfE972a8aD9";
+    const roleContractABI = [
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "enum RoleBasedLogin.Role",
+				"name": "role",
+				"type": "uint8"
+			}
+		],
+		"name": "UserLoggedIn",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "username",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "enum RoleBasedLogin.Role",
+				"name": "role",
+				"type": "uint8"
+			}
+		],
+		"name": "UserRegistered",
+		"type": "event"
+	},
+	{
+		"inputs": [],
+		"name": "getMyDetails",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "string",
+						"name": "username",
+						"type": "string"
+					},
+					{
+						"internalType": "enum RoleBasedLogin.Role",
+						"name": "role",
+						"type": "uint8"
+					},
+					{
+						"internalType": "bool",
+						"name": "isRegistered",
+						"type": "bool"
+					}
+				],
+				"internalType": "struct RoleBasedLogin.User",
+				"name": "",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getMyRole",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "login",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "success",
+				"type": "bool"
+			},
+			{
+				"internalType": "string",
+				"name": "role",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "logout",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "success",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_username",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_role",
+				"type": "string"
+			}
+		],
+		"name": "register",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	}
+];
 
     let web3;
     let contract;
@@ -221,6 +365,7 @@
         currentAccount = accounts[0];
         contract = new web3.eth.Contract(distributionABI, distributionContractAddress);
         loadMilestones();
+        loadUserProfile();
       } else {
         alert("Please install MetaMask to continue.");
       }
@@ -273,6 +418,35 @@
         alert("Failed to mark milestone as complete.");
       }
     }
+
+    async function loadUserProfile() {
+    const roleMap = { 0: "Unregistered", 1: "Donor", 2: "Charity Collector" };
+    
+    const accounts = await web3.eth.getAccounts();
+    const user = accounts[0];
+
+    const roleContract = new web3.eth.Contract(roleContractABI, roleContractAddress);
+    
+    const userInfo = await roleContract.methods.getMyDetails().call({from: user});
+    const userRole = roleMap[userInfo.role] || "Unknown Role";
+    document.getElementById("profileName").innerText = userInfo.username || "Unknown User";
+    document.getElementById("profileRole").innerText = userRole || "Unknown Role";
+    document.getElementById("profileInitials").innerText = userInfo.username
+    ? userInfo.username[0].toUpperCase()
+    : "?";
+	document.querySelectorAll(`.nav-link[data-role="${userRole}"]`).forEach(link => {
+          link.style.display = 'inline';
+    });
+	const logoutButton = document.getElementById('logout-btn');
+	logoutButton.addEventListener('click', async () => {
+	  try {
+		await roleContract.methods.logout().send({ from: user });
+		window.location.href = "login_signup.html";
+	  } catch (error) {
+		console.error("Logout failed:", error);
+	  }
+    });
+	}
   </script>
 </body>
 </html>

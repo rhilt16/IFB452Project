@@ -52,6 +52,8 @@
       font-size: large;
     }
 
+	
+
     nav a:hover {
       color: #ffffff;
     }
@@ -119,6 +121,23 @@
   margin-left: 50px;
   color: #fff;
 }
+.nav-link {
+      display: none; /* hide all links by default */
+    }
+
+	button {
+  align-self: flex-start;
+  padding: 0.75rem 2rem;
+  margin-left: 100px;
+  margin-top: 10px;
+  background-color: #00ffcc;
+  color: #000;
+  font-weight: bold;
+  font-size: medium;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
 
 
   </style>
@@ -129,10 +148,13 @@
       <img src="/Users/sanvimehra/Documents/front end blockchain/Tech brand-3.png" alt="DonateMe Logo">
     </div>
     <nav>
-      <a href="createDonation.html">Create</a>
-      <a href="search_donation.html">Search</a>
-      <a href="donation_history.html">History</a>
-      <a href="charity_view.html">Milestones</a>
+      <a href="login_signup.html" class="nav-link" data-role="Unregistered">Login</a>
+      <a href="createDonation.html" class="nav-link" data-role="Charity Collector">Create</a>
+      <a href="search_donation.html" class="nav-link" data-role="Donor">Search</a>
+      <a href="make_donation.html" class="nav-link" data-role="Donor">Make Donation</a>
+	  <a href="donation_history.html" class="nav-link" data-role="Donor">History</a>
+      <a href="charity_view.html" class="nav-link" data-role="Charity Collector">Milestones</a>
+      <button type="button" id="logout-btn" >Logout</button>
     </nav>
     <div class="profile-badge" id="profileBadge">
       <span id="profileInitials">--</span>
@@ -403,7 +425,7 @@
 	}
 ]
 
-    const roleContractAddress = "0x0f057f263796c64fA19f00A9fC1110BE896A3859";
+    const roleContractAddress = "0x9bd4aAAc86E58D28c4e7c36642c57FfE972a8aD9";
     const roleContractABI = [
 	{
 		"anonymous": false,
@@ -545,6 +567,7 @@
 
     let web3;
     let contract;
+	
 
     window.addEventListener('load', async () => {
       const historyDiv = document.getElementById('history');
@@ -557,6 +580,7 @@
         
         contract = new web3.eth.Contract(donationContractABI, donationContractAddress);
         await loadUserProfile();
+
         try {
           const allDonations = await contract.methods.getAllDonations().call();
           const donations = allDonations.filter(donation => donation.donorAdd === userAddress);
@@ -600,13 +624,24 @@
     
     const userInfo = await roleContract.methods.getMyDetails().call({from: user});
     const userRole = roleMap[userInfo.role] || "Unknown Role";
-	console.log(userInfo);
     document.getElementById("profileName").innerText = userInfo.username || "Unknown User";
     document.getElementById("profileRole").innerText = userRole || "Unknown Role";
     document.getElementById("profileInitials").innerText = userInfo.username
     ? userInfo.username[0].toUpperCase()
     : "?";
-    }
+	document.querySelectorAll(`.nav-link[data-role="${userRole}"]`).forEach(link => {
+          link.style.display = 'inline';
+    });
+	const logoutButton = document.getElementById('logout-btn');
+	logoutButton.addEventListener('click', async () => {
+	  try {
+		await roleContract.methods.logout().send({ from: user });
+		window.location.href = "login_signup.html";
+	  } catch (error) {
+		console.error("Logout failed:", error);
+	  }
+    });
+	}
 
   </script>
 

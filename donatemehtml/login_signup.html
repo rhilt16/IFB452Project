@@ -119,7 +119,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
   <script>
-    const contractAddress = "0xBe63781949F1B1aAe00025787F8d6174Cbe99348";
+    const contractAddress = "0x9bd4aAAc86E58D28c4e7c36642c57FfE972a8aD9";
     const contractABI = [
 	{
 		"inputs": [],
@@ -282,6 +282,12 @@
       try {
         await contract.methods.register(username, role).send({ from: userAccount });
         alert("Registration successful!");
+        if( role === "donor") {
+          window.location.href = "search_donation.html";
+        } else {
+          window.location.href = "charity_view.html";
+        }
+        
       } catch (err) {
         console.error(err);
         alert("Registration failed.");
