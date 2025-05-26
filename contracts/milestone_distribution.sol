@@ -1,10 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-interface IRoles {
-    function getMyRole() external view returns (string memory);
-}
-
 contract DistributionContract {
     uint256 public charityCount;
     address public roleContractAdd;
@@ -30,9 +26,7 @@ contract DistributionContract {
         bool fundsLocked
     );
 
-    constructor(address _roleContract) {
-        roleContractAdd = _roleContract;
-    }
+    
 
     function addCharity(
         string memory _name,

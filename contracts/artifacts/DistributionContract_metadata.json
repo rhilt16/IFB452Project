@@ -6,17 +6,6 @@
 	"output": {
 		"abi": [
 			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "_roleContract",
-						"type": "address"
-					}
-				],
-				"stateMutability": "nonpayable",
-				"type": "constructor"
-			},
-			{
 				"anonymous": false,
 				"inputs": [
 					{
@@ -254,11 +243,11 @@
 	},
 	"sources": {
 		"contracts/milestone_distribution.sol": {
-			"keccak256": "0x0cdf2fcf312ad908a382dd6abdd0d9b653e92d332e323fbab78b172dee59c998",
+			"keccak256": "0x0c4a7693287489185c184ee19792604649c1a45e7c99e0d98d558a8cd564718e",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://c9c8d142ca68837ac1faa04421e9384aa49c2f02f8cbe9540fd4fe9b5db6e97b",
-				"dweb:/ipfs/QmY9NFStHKyDwstbGuPoXSKKz2rneS5ncLLujEoL16Jsbb"
+				"bzz-raw://e538d7c1aa003a61e19a33ad1d8feff81563ead4e3c2c7ac68e918f5bac078aa",
+				"dweb:/ipfs/QmRg8dkXk4SWKdtvSz4gA8YX4X4Bj67fKkfs8CGzEH9iLs"
 			]
 		}
 	},
