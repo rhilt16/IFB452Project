@@ -192,83 +192,87 @@
   </style>
 </head>
 <body>
-    <header>
-    <div class="logo">
-      <img src="/Users/sanvimehra/Documents/front end blockchain/Tech brand-3.png" alt="DonateMe Logo">
-    </div>
-    <nav>
-      <a href="login_signup.html">Logout</a>
-      <a href="createDonation.html">Create</a>
-      <a href="search_donation.html">Search</a>
-      <a href="donation_history.html">History</a>
-      <a href="charity_view.html">Milestones</a>
-    </nav>
-    <div class="profile-badge" id="profileBadge">
-      <span id="profileInitials">--</span>
-      <div>
-        <p id="profileName">Loading...</p>
-        <p id="profileRole">Checking role...</p>
-      </div>
-    </div>
-  </header>
+  <header>
+    <div class="logo">
+      <img src="/Users/sanvimehra/Documents/front end blockchain/Tech brand-3.png" alt="DonateMe Logo">
+    </div>
+    <nav>
+      <a href="login_signup.html">Logout</a>
+      <a href="createDonation.html">Create</a>
+      <a href="search_donation.html">Search</a>
+      <a href="donation_history.html">History</a>
+      <a href="charity_view.html">Milestones</a>
+    </nav>
+    <div class="profile-badge" id="profileBadge">
+      <span id="profileInitials">--</span>
+      <div>
+        <p id="profileName">Loading...</p>
+        <p id="profileRole">Checking role...</p>
+      </div>
+    </div>
+  </header>
 
-  <div class="container">
-    <h2>Donate to this Charity</h2>
+  <div class="container">
+    <h2>Donate to this Charity</h2>
+    <input type="text" id="charityName" placeholder="Charity Name (must match exact)" />
+    <input type="text" id="charityAddress" placeholder="Charity Wallet Address" />
+    <input type="number" id="donationAmount" placeholder="Amount in AUD" />
+    <button onclick="donateToCharity()">Donate</button>
+    <div id="donationResult" class="result"></div>
+  </div>
 
-    <input type="text" id="charityAddress" placeholder="Charity Wallet Address" />
-    <input type="number" id="donationAmount" placeholder="Amount in ETH" />
-    <button onclick="donate()">Donate</button>
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.3.6/dist/web3.min.js"></script>
+  <script>
+    const donationContractAddress = "0x13F150232d804AB6Bc48AdD0d90aDE8eE0a56B93";
+    const donationABI = [{
+      "inputs": [
+        { "internalType": "string", "name": "_charity", "type": "string" },
+        { "internalType": "address", "name": "charityAdd", "type": "address" },
+        { "internalType": "address", "name": "donorAdd", "type": "address" },
+        { "internalType": "uint256", "name": "_donationAmount", "type": "uint256" }
+      ],
+      "name": "donate",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }];
 
-    <div id="donationResult" class="result"></div>
-  </div>
+    async function donateToCharity() {
+      const name = document.getElementById("charityName").value.trim();
+      const address = document.getElementById("charityAddress").value.trim();
+      const amount = document.getElementById("donationAmount").value;
+      const resultBox = document.getElementById("donationResult");
 
-  <script>
-    async function donate() {
-      const address = document.getElementById("charityAddress").value;
-      const amount = document.getElementById("donationAmount").value;
-      const resultBox = document.getElementById("donationResult");
+      if (!name || !address || !amount) {
+        resultBox.style.display = "block";
+        resultBox.innerText = "Please fill out all fields.";
+        return;
+      }
 
-      if (!window.ethereum) {
-        resultBox.style.display = "block";
-        resultBox.innerText = "MetaMask not detected";
-        return;
-      }
+      if (!window.ethereum) {
+        resultBox.style.display = "block";
+        resultBox.innerText = "MetaMask not detected";
+        return;
+      }
 
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      await provider.send("eth_requestAccounts", []);
-      const signer = provider.getSigner();
+      const web3 = new Web3(window.ethereum);
+      await window.ethereum.enable();
+      const accounts = await web3.eth.getAccounts();
+      const sender = accounts[0];
+      const contract = new web3.eth.Contract(donationABI, donationContractAddress);
 
-      try {
-        const tx = await signer.sendTransaction({
-          to: address,
-          value: ethers.utils.parseEther(amount)
-        });
-        await tx.wait();
+      try {
+        const cleanAddress = web3.utils.toChecksumAddress(address);
+        const amountInWei = web3.utils.toWei(amount, "ether");
+        await contract.methods.donate(name, cleanAddress, sender, amountInWei).send({ from: sender });
 
-        resultBox.style.display = "block";
-        resultBox.innerText = `✅ Donated ${amount} ETH to ${address}`;
-      } catch (err) {
-        resultBox.style.display = "block";
-        resultBox.innerText = `❌ Transaction failed: ${err.message}`;
-      }
-    }
-    window.addEventListener("DOMContentLoaded", () => {
-    const user = JSON.parse(localStorage.getItem("loggedInUser"));
-
-    const donorLinks = document.querySelectorAll(".nav-donor");
-    const charityLinks = document.querySelectorAll(".nav-charity");
-
-    if (!user) {
-      donorLinks.forEach(link => link.style.display = "none");
-      charityLinks.forEach(link => link.style.display = "none");
-    } else if (user.role === "1" || user.role === "donor") {
-      charityLinks.forEach(link => link.style.display = "none");
-    } else if (user.role === "2" || user.role === "collector" || user.role === "charity") {
-      donorLinks.forEach(link => link.style.display = "none");
-    }
-  });
-  </script>
-
-  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
+        resultBox.style.display = "block";
+        resultBox.innerText = `✅ Donated ${amount} ETH to ${name}`;
+      } catch (err) {
+        resultBox.style.display = "block";
+        resultBox.innerText = `❌ Transaction failed: ${err.message}`;
+      }
+    }
+ </script>
 </body>
 </html>
