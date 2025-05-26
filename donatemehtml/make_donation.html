@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Donate to a Charity</title>
+  <style>
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #1b1b1e;
+      padding: 1rem 2rem;
+      border-bottom: 2px solid #00ffcc;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .logo img {
+      height: 120px;
+      margin-left: -20px;
+
+    }
+
+    nav a {
+      color: #00ffcc;
+      margin: 0 1rem;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      color: #ffffff;
+    }
+
+    .profile-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: #1c1c1e;
+      padding: 0.5rem 1rem;
+      border-radius: 30px;
+      border: 2px solid #00ffcc;
+    }
+
+    .profile-badge span {
+      background-color: #00ffcc;
+      color: #000;
+      font-weight: bold;
+      font-size: 1rem;
+      padding: 0.5rem;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      text-align: center;
+    }
+
+    main {
+  max-width: 700px;
+  margin: 4rem auto;
+  padding: 2rem 2.5rem;
+  background: rgba(28, 28, 30, 0.95);
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  width: 90%;
+}
+
+@media (max-width: 600px) {
+  nav a {
+    font-size: 0.9rem;
+    margin: 0 0.5rem;
+  }
+
+  .profile-badge {
+    flex-direction: column;
+    padding: 0.5rem;
+    text-align: center;
+  }
+
+  main {
+    margin: 2rem auto;
+    padding: 1rem;
+  }
+}
+     h1 {
+  color: #00ffcc;
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+  margin-left: 50px;
+  margin-top: 30px;
+  text-align: left;
+}
+
+.form-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+
+    label {
+      display: block;
+      margin-top: 1.2rem;
+      margin-left: 100px;
+      font-weight: bold;
+    }
+
+    body {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
+  background-attachment: fixed;
+  background-size: cover;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+    .container {
+  background: #1c1c1e;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  width: 350px;
+  margin: 4rem auto; 
+}
+
+    h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+      color: #00ffcc;
+    }
+
+    button {
+      background-color: #00ffcc;
+      align-items: center;
+      width: 92%;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      padding: 0.75rem;
+      margin-top: 1rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    select, input, button {
+      width: 90%;
+      padding: 0.75rem;
+      margin-top: 0.75rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    input {
+      background: #2a2a2e;
+      color: #f1f1f1;
+    }
+    button {
+      background-color: #00ffcc;
+      color: #000;
+      width: 97%;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background-color: #00e6b8;
+    }
+    .result {
+      margin-top: 1.5rem;
+      background: #2a2a2e;
+      padding: 1rem;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+    <header>
+    <div class="logo">
+      <img src="/Users/sanvimehra/Documents/front end blockchain/Tech brand-3.png" alt="DonateMe Logo">
+    </div>
+    <nav>
+      <a href="login_signup.html">Logout</a>
+      <a href="createDonation.html">Create</a>
+      <a href="search_donation.html">Search</a>
+      <a href="donation_history.html">History</a>
+      <a href="charity_view.html">Milestones</a>
+    </nav>
+    <div class="profile-badge" id="profileBadge">
+      <span id="profileInitials">--</span>
+      <div>
+        <p id="profileName">Loading...</p>
+        <p id="profileRole">Checking role...</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <h2>Donate to this Charity</h2>
+
+    <input type="text" id="charityAddress" placeholder="Charity Wallet Address" />
+    <input type="number" id="donationAmount" placeholder="Amount in ETH" />
+    <button onclick="donate()">Donate</button>
+
+    <div id="donationResult" class="result"></div>
+  </div>
+
+  <script>
+    async function donate() {
+      const address = document.getElementById("charityAddress").value;
+      const amount = document.getElementById("donationAmount").value;
+      const resultBox = document.getElementById("donationResult");
+
+      if (!window.ethereum) {
+        resultBox.style.display = "block";
+        resultBox.innerText = "MetaMask not detected";
+        return;
+      }
+
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      await provider.send("eth_requestAccounts", []);
+      const signer = provider.getSigner();
+
+      try {
+        const tx = await signer.sendTransaction({
+          to: address,
+          value: ethers.utils.parseEther(amount)
+        });
+        await tx.wait();
+
+        resultBox.style.display = "block";
+        resultBox.innerText = `✅ Donated ${amount} ETH to ${address}`;
+      } catch (err) {
+        resultBox.style.display = "block";
+        resultBox.innerText = `❌ Transaction failed: ${err.message}`;
+      }
+    }
+    window.addEventListener("DOMContentLoaded", () => {
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+
+    const donorLinks = document.querySelectorAll(".nav-donor");
+    const charityLinks = document.querySelectorAll(".nav-charity");
+
+    if (!user) {
+      donorLinks.forEach(link => link.style.display = "none");
+      charityLinks.forEach(link => link.style.display = "none");
+    } else if (user.role === "1" || user.role === "donor") {
+      charityLinks.forEach(link => link.style.display = "none");
+    } else if (user.role === "2" || user.role === "collector" || user.role === "charity") {
+      donorLinks.forEach(link => link.style.display = "none");
+    }
+  });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
+</body>
+</html>
