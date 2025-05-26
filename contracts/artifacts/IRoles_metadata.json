@@ -32,7 +32,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"contracts/milestone_distribution.sol": "IRoles"
+			"contracts/donation.sol": "IRoles"
 		},
 		"evmVersion": "prague",
 		"libraries": {},
@@ -46,12 +46,12 @@
 		"remappings": []
 	},
 	"sources": {
-		"contracts/milestone_distribution.sol": {
-			"keccak256": "0x0cdf2fcf312ad908a382dd6abdd0d9b653e92d332e323fbab78b172dee59c998",
+		"contracts/donation.sol": {
+			"keccak256": "0x75ca03d7afa23981cb5599e35eccd9333a08a4bcd510a987d314c65fd4db838a",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://c9c8d142ca68837ac1faa04421e9384aa49c2f02f8cbe9540fd4fe9b5db6e97b",
-				"dweb:/ipfs/QmY9NFStHKyDwstbGuPoXSKKz2rneS5ncLLujEoL16Jsbb"
+				"bzz-raw://c0ab885d0a87343cfaa61c52486b0694a8b51569727912bee259f87a43eeb9e6",
+				"dweb:/ipfs/Qmd59qAwMewJShN5eQQb6AEjxg8b9BEsft3q7Pa7mqvwhC"
 			]
 		}
 	},
