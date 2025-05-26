@@ -228,19 +228,259 @@
 
   <script src="https://cdn.jsdelivr.net/npm/web3@1.3.6/dist/web3.min.js"></script>
   <script>
-    const donationContractAddress = "0x13F150232d804AB6Bc48AdD0d90aDE8eE0a56B93";
-    const donationABI = [{
-      "inputs": [
-        { "internalType": "string", "name": "_charity", "type": "string" },
-        { "internalType": "address", "name": "charityAdd", "type": "address" },
-        { "internalType": "address", "name": "donorAdd", "type": "address" },
-        { "internalType": "uint256", "name": "_donationAmount", "type": "uint256" }
-      ],
-      "name": "donate",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    }];
+    const donationContractAddress = "0xfc0A71A40E5CAB010aD9a6b7BBaf12248544A717";
+    const donationABI = [
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_verify",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "_milestone",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "_roleContract",
+				"type": "address"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "donationID",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "charity",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "charityAdd",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "donorAdd",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "donationAmount",
+				"type": "uint256"
+			}
+		],
+		"name": "DonationCreated",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_charity",
+				"type": "string"
+			},
+			{
+				"internalType": "address",
+				"name": "charityAdd",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "donorAdd",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_donationAmount",
+				"type": "uint256"
+			}
+		],
+		"name": "donate",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "donationCount",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "donations",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "charity",
+				"type": "string"
+			},
+			{
+				"internalType": "address",
+				"name": "charityAdd",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "donorAdd",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "donationAmount",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getAllDonations",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "string",
+						"name": "charity",
+						"type": "string"
+					},
+					{
+						"internalType": "address",
+						"name": "charityAdd",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "donorAdd",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "donationAmount",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct DonationContract.Donation[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_charityAddress",
+				"type": "address"
+			}
+		],
+		"name": "getDonationsByAddress",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "string",
+						"name": "charity",
+						"type": "string"
+					},
+					{
+						"internalType": "address",
+						"name": "charityAdd",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "donorAdd",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "donationAmount",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct DonationContract.Donation[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_charity",
+				"type": "string"
+			}
+		],
+		"name": "getDonationsByName",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "string",
+						"name": "charity",
+						"type": "string"
+					},
+					{
+						"internalType": "address",
+						"name": "charityAdd",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "donorAdd",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "donationAmount",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct DonationContract.Donation[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+];
 const roleContractAddress = "0x9bd4aAAc86E58D28c4e7c36642c57FfE972a8aD9";
     const roleContractABI = [
 	{
@@ -403,15 +643,16 @@ const roleContractAddress = "0x9bd4aAAc86E58D28c4e7c36642c57FfE972a8aD9";
       await window.ethereum.enable();
       const accounts = await web3.eth.getAccounts();
       const sender = accounts[0];
-      const contract = new web3.eth.Contract(donationABI, donationContractAddress);
+      
+const contract = new web3.eth.Contract(donationABI, donationContractAddress);
 
       try {
         const cleanAddress = web3.utils.toChecksumAddress(address);
-        const amountInWei = web3.utils.toWei(amount, "ether");
-        await contract.methods.donate(name, cleanAddress, sender, amountInWei).send({ from: sender });
+        
+        await contract.methods.donate(name, cleanAddress, sender, amount).send({ from: sender });
 
         resultBox.style.display = "block";
-        resultBox.innerText = `✅ Donated ${amount} ETH to ${name}`;
+        resultBox.innerText = `✅ Donated $${amount} to ${name}`;
       } catch (err) {
         resultBox.style.display = "block";
         resultBox.innerText = `❌ Transaction failed: ${err.message}`;
