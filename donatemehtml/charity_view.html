@@ -133,7 +133,7 @@
 <body>
   <header>
     <div class="logo">
-      <img src="/Users/sanvimehra/Documents/front end blockchain/Tech brand-3.png" alt="DonateMe Logo">
+      <img src="logo.png" alt="DonateMe Logo">
     </div>
     <nav>
       <a href="login_signup.html" class="nav-link" data-role="Unregistered">Login</a>
@@ -164,7 +164,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/web3@1.3.6/dist/web3.min.js"></script>
   <script>
-    const distributionContractAddress = "0x19c61e380e3C1bFE4fdb803973C12ED5eCcedF59";
+    const distributionContractAddress = "0x6E5f3442567c20bbF95E7FC3F9FDfD8fAb179130";
     const distributionABI = [
       {
         "inputs": [
@@ -213,7 +213,7 @@
         "type": "function"
       }
     ];
-    const roleContractAddress = "0x9bd4aAAc86E58D28c4e7c36642c57FfE972a8aD9";
+    const roleContractAddress = "0x143C4D89491924Fd16f0C323089F752133201eD1";
     const roleContractABI = [
 	{
 		"anonymous": false,
@@ -352,7 +352,7 @@
 		"type": "function"
 	}
 ];
-
+    let charityNameString = "";
     let web3;
     let contract;
     let currentAccount;
@@ -370,7 +370,7 @@
         alert("Please install MetaMask to continue.");
       }
     });
-
+    let charityName;
     async function loadMilestones() {
       const milestoneDiv = document.getElementById('milestoneList');
       milestoneDiv.innerHTML = "";
@@ -378,13 +378,14 @@
 
       for (let i = 1; i <= count; i++) {
         const data = await contract.methods.getCharityById(i).call();
-        if (data.charityAddress.toLowerCase() === currentAccount.toLowerCase()) {
+        if (data.name === charityNameString) {
+          charityName = data.name;
           milestoneDiv.innerHTML += `
             <div class="milestone-box">
               <p><strong>Charity Name:</strong> ${data.name}</p>
               <p><strong>Milestone:</strong> ${data.milestoneDescription}</p>
-              <p><strong>Target:</strong> ${web3.utils.fromWei(data.targetDonation)} ETH</p>
-              <p><strong>Total Raised:</strong> ${web3.utils.fromWei(data.totalRaised)} ETH</p>
+              <p><strong>Target:</strong> ${(data.targetDonation)} ETH</p>
+              <p><strong>Total Raised:</strong> ${(data.totalRaised)} ETH</p>
               <p><strong>Status:</strong> ${data.isMilestoneComplete ? "✅ Complete" : "⏳ Pending"}</p>
               ${!data.isMilestoneComplete ? `<button onclick="markComplete(${i})">Mark as Complete</button>` : ""}
             </div>
@@ -399,7 +400,7 @@
       if (!desc || !amt) return alert("Please fill out all fields.");
 
       try {
-        await contract.methods.addCharity("MyCharity", currentAccount, desc).send({ from: currentAccount });
+        await contract.methods.addCharity(charityName, currentAccount, desc).send({ from: currentAccount });
         alert("Milestone added successfully!");
         loadMilestones();
       } catch (err) {
@@ -429,6 +430,7 @@
     
     const userInfo = await roleContract.methods.getMyDetails().call({from: user});
     const userRole = roleMap[userInfo.role] || "Unknown Role";
+    charityNameString = userInfo.username || "Unknown User";
     document.getElementById("profileName").innerText = userInfo.username || "Unknown User";
     document.getElementById("profileRole").innerText = userRole || "Unknown Role";
     document.getElementById("profileInitials").innerText = userInfo.username
