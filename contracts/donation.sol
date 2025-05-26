@@ -124,7 +124,6 @@ contract DonationContract {
 
         return donationsArray;
     }
-
     
 
     function getAllDonations() public view returns (Donation[] memory) {
