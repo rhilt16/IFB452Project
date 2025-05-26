@@ -66,6 +66,11 @@
       text-decoration: none;
       font-weight: bold;
     }
+    .logo img {
+      height: 140px;
+      margin-left:-50px;
+      margin-bottom: -10px;
+    }
     .logo {
   display: flex;
   justify-content: center;
@@ -86,6 +91,7 @@
   <div class="container" id="loginContainer">
     <div class="logo">
       <img src="logo.png" alt="DonateMe Logo">
+      <img src="logo.png" alt="DonateMe Logo">
 
     </div>
     <select>
@@ -102,6 +108,7 @@
 
   <div class="container" id="signupContainer" style="display:none;">
     <div class="logo">
+      <img src="logo.png" alt="DonateMe Logo">
       <img src="logo.png" alt="DonateMe Logo">
     </div>
     <select>
@@ -128,7 +135,8 @@
 
   <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
   <script>
-    const contractAddress = "0x6652AB7EE901d828dAe2feF9b1cBfb2C7Cc245EB";
+    const contractAddress = "0x143C4D89491924Fd16f0C323089F752133201eD1";
+
     const contractABI = [
 	{
 		"inputs": [],
@@ -268,7 +276,164 @@
 	}
 ];
 
-    let web3, contract, userAccount;
+const charityVerifyAddress = "0x423781580aA6542811f59E07d48908f80cda2f95";
+
+    // Simplified ABI with only verifyCharity() function
+    const charityVerifyABI = [
+      {
+        "inputs": [
+          { "internalType": "address", "name": "", "type": "address" },
+          { "internalType": "string", "name": "", "type": "string" }
+        ],
+        "name": "verifyCharity",
+        "outputs": [
+          { "internalType": "bool", "name": "", "type": "bool" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      }
+    ];
+    const roleContractAddress = "0x143C4D89491924Fd16f0C323089F752133201eD1";
+    const roleContractABI = [
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "enum RoleBasedLogin.Role",
+				"name": "role",
+				"type": "uint8"
+			}
+		],
+		"name": "UserLoggedIn",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "username",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "enum RoleBasedLogin.Role",
+				"name": "role",
+				"type": "uint8"
+			}
+		],
+		"name": "UserRegistered",
+		"type": "event"
+	},
+	{
+		"inputs": [],
+		"name": "getMyDetails",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "string",
+						"name": "username",
+						"type": "string"
+					},
+					{
+						"internalType": "enum RoleBasedLogin.Role",
+						"name": "role",
+						"type": "uint8"
+					},
+					{
+						"internalType": "bool",
+						"name": "isRegistered",
+						"type": "bool"
+					}
+				],
+				"internalType": "struct RoleBasedLogin.User",
+				"name": "",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getMyRole",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "login",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "success",
+				"type": "bool"
+			},
+			{
+				"internalType": "string",
+				"name": "role",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "logout",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "success",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_username",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_role",
+				"type": "string"
+			}
+		],
+		"name": "register",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	}
+];
+
+    let web3, contract, userAccount, verifyCharityContract;
 
     async function init() {
       if (window.ethereum) {
@@ -277,6 +442,7 @@
         const accounts = await web3.eth.getAccounts();
         userAccount = accounts[0];
         contract = new web3.eth.Contract(contractABI, contractAddress);
+        verifyCharityContract = new web3.eth.Contract(charityVerifyABI, charityVerifyAddress);
       } else {
         alert("Please install MetaMask to use this app.");
       }
@@ -287,15 +453,28 @@
     document.querySelector('#signupContainer button').onclick = async () => {
       const username = document.querySelector('#signupContainer input[placeholder="Full Name"]').value;
       const role = document.querySelector('#signupContainer select').value;
+      const address = document.querySelector('#signupContainer input[placeholder="Wallet Address or Email"]').value;
+
+      console.log(`Registering user: ${username}, Role: ${role}, Address: ${address}`);
 
       try {
-        await contract.methods.register(username, role).send({ from: userAccount });
-        alert("Registration successful!");
-        if( role === "donor") {
-          window.location.href = "search_donation.html";
+        const isValidCharity = await verifyCharityContract.methods.verifyCharity(address, username).call();
+        if (role === "charity" && !isValidCharity) {
+          alert("This charity is not verified. Unable to register.");
+          return;
         } else {
-          window.location.href = "charity_view.html";
+
+          await contract.methods.register(username, role).send({ from: userAccount });
+
+          alert("Registration successful!");
+          if( role === "donor") {
+            window.location.href = "search_donation.html";
+          } else {
+            window.location.href = "charity_view.html";
+          }
+
         }
+        
         
       } catch (err) {
         console.error(err);
