@@ -52,8 +52,9 @@ contract RoleBasedLogin {
         return (true, userRole);
     }
 
+    // If the user has been registered, then reset the senders value in the user mapping
     function logout() public returns (bool success) {
-        
+        // If they are not registered, then return false
         if(!users[msg.sender].isRegistered){
             return false;
         }
@@ -70,10 +71,10 @@ contract RoleBasedLogin {
      * - Accepts only "donor" or "collector".
      */
     function getRoleFromString(string memory _role) internal pure returns (Role) {
-    bytes32 roleHash = keccak256(abi.encodePacked(_role));
+        bytes32 roleHash = keccak256(abi.encodePacked(_role));
 
-    if (roleHash == keccak256(abi.encodePacked("donor"))) return Role.Donor;
-    if (roleHash == keccak256(abi.encodePacked("charity"))) return Role.Charity;
+        if (roleHash == keccak256(abi.encodePacked("donor"))) return Role.Donor;
+        if (roleHash == keccak256(abi.encodePacked("charity"))) return Role.Charity;
 
     return Role.None;
 }

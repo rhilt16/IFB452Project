@@ -5,7 +5,7 @@ pragma solidity >=0.7.0 <0.9.0;
 
 contract CharityVerificationContract {
 
-    
+    // Based on hard coded verified charities, verify if an input is valid
     function verifyCharity(address charityAddress, string memory name) external pure returns (bool success) {
         
         string[3] memory registeredCharities  = [

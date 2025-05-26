@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+// Interfaces for each other contract
+
 interface ICharityVerify {
     function verifyCharity(address, string memory) external view returns (bool);
 }
@@ -13,9 +15,11 @@ interface IRoles {
     function getMyRole() external view returns (string memory);
 
 }
+
+
 contract DonationContract {
 
-
+    // initialise the connecting smart contracts
     address verifyContractAdd;
     address milestoneAdd;
     address roleContractAdd;
@@ -45,18 +49,6 @@ contract DonationContract {
         
     }
 
-    modifier isDonor() {
-        string memory role = IRoles(roleContractAdd).getMyRole();
-        require(keccak256(abi.encodePacked(role)) == keccak256(abi.encodePacked("donor")),"Not a valid donor");
-        _;
-    }
-
-    modifier isCharity() {
-        string memory role = IRoles(roleContractAdd).getMyRole();
-        require(keccak256(abi.encodePacked(role)) ==keccak256(abi.encodePacked("charity")), "Not a valid charity");
-        _;
-    }
-
 
     function donate(string memory _charity, address charityAdd, address donorAdd, uint _donationAmount) public {
         if(!(ICharityVerify(verifyContractAdd).verifyCharity(charityAdd, _charity))){
@@ -65,13 +57,13 @@ contract DonationContract {
 
         IMilestone(milestoneAdd).contributeFunds(_charity, _donationAmount);
         
-        // Increment contractCount to generate a unique contract ID
+        // Increment donationCount to generate a unique donation ID
         donationCount++;
 
-        // Create a new quality contract and store it in the qualityContracts mapping
+        // Create a new donation and store it in the doantions mapping
         donations[donationCount] = Donation(_charity, charityAdd, donorAdd, _donationAmount);
 
-        // Emit an event to signify the creation of a new quality contract
+        
         emit DonationCreated(donationCount, _charity, charityAdd, donorAdd, _donationAmount);
     }
 

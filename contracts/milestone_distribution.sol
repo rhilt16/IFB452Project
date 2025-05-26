@@ -2,9 +2,10 @@
 pragma solidity ^0.8.0;
 
 contract DistributionContract {
+    // A counter for the charities
     uint256 public charityCount;
-    address public roleContractAdd;
 
+    // Structure, mapping, and events to handle new charities being created
     struct CharityDetails {
         string name;
         address charityAddress;
@@ -25,16 +26,10 @@ contract DistributionContract {
         uint256 targetDonation,
         bool fundsLocked
     );
-
-    function addCharity(
-        string memory _name,
-        address _charityAddress,
-        string memory _milestoneDescription
-    ) public {
-        
-        
+    // Adds new charity
+    function addCharity(string memory _name, address _charityAddress, string memory _milestoneDescription) public {
+        // Update the charity count, create a new charity object and add it to the charities list
         charityCount++;
-
         charities[charityCount] = CharityDetails(
             _name,
             _charityAddress,
@@ -54,18 +49,23 @@ contract DistributionContract {
             true
         );
     }
-
+    
     function contributeFunds(string memory _charity, uint256 _amount) external {
+        // Check if the charity exists, fail if it doesn't
         int256 index = charityExists(_charity);
         require(index != -1, "Charity does not exist");
+
+        // Otherwise, retrive the stored charity from the index, and add the donated amount to the total
         CharityDetails storage charity = charities[uint256(index)];
         charity.totalRaised += _amount;
 
+        // If the total exceeds the target, unlocks the funds
         if (charity.totalRaised >= charity.targetDonation) {
             charity.fundsLocked = false;
         }
     }
 
+    // Mark the milstone as complete if the total has exceeded the target
     function markMilestoneComplete(uint256 charityID) public {
         if(charities[charityID].totalRaised >= charities[charityID].targetDonation) {
             charities[charityID].isMilestoneComplete = true;
@@ -74,6 +74,7 @@ contract DistributionContract {
         }
     }
 
+    // Update the milestone with a new description
     function updateMilestone(uint256 charityID, string memory newDescription) public {
         require(
             msg.sender == charities[charityID].charityAddress,
@@ -81,20 +82,8 @@ contract DistributionContract {
         );
         charities[charityID].milestoneDescription = newDescription;
     }
-
-    function getCharityById(uint256 id)
-        public
-        view
-        returns (
-            string memory name,
-            address charityAddress,
-            uint256 totalRaised,
-            uint256 targetDonation,
-            bool fundsLocked,
-            string memory milestoneDescription,
-            bool isMilestoneComplete
-        )
-    {
+    // Retrieve charity by ID
+    function getCharityById(uint256 id) public view returns (string memory name, address charityAddress, uint256 totalRaised, uint256 targetDonation, bool fundsLocked, string memory milestoneDescription, bool isMilestoneComplete){
         CharityDetails memory c = charities[id];
         return (
             c.name,
@@ -107,6 +96,8 @@ contract DistributionContract {
         );
     }
 
+    // Check if the charity exists, fail if it doesn't
+    // Returns index or -1
     function charityExists(string memory _charity) public view returns (int256) {
         for (uint256 i = 1; i <= charityCount; i++) {
             if (

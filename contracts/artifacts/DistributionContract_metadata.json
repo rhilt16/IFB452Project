@@ -184,19 +184,6 @@
 				"type": "function"
 			},
 			{
-				"inputs": [],
-				"name": "roleContractAdd",
-				"outputs": [
-					{
-						"internalType": "address",
-						"name": "",
-						"type": "address"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
 				"inputs": [
 					{
 						"internalType": "uint256",
@@ -243,11 +230,11 @@
 	},
 	"sources": {
 		"contracts/milestone_distribution.sol": {
-			"keccak256": "0xb5d5218fef85148538a88919397ee0f8a2770cb3c7b4c82364cc4dfc477d2ccc",
+			"keccak256": "0xfa0b6fb81b3a99c1531309307394d2dc84f238651717380e48f37c320c551f7e",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://a77c83298b3ab4563d805a7bf7ee28e7e2ff8abb407b95e01720cc8c898ce7af",
-				"dweb:/ipfs/QmawKdVFQ1PzkFb2hppuXXwBz4XfY8HAJAjhpYhxQTUi24"
+				"bzz-raw://057603ea7e61461659903c94a14c284e497e3d6855b6b666c4bfef0dbf2a942b",
+				"dweb:/ipfs/QmSJJLuLoCszPkZzCBM1SWPWhCp66CmKUn6hMgxN97xb5L"
 			]
 		}
 	},
